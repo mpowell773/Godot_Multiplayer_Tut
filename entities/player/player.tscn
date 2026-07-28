@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://egtpvj3ddlhx"]
 
 [ext_resource type="Script" uid="uid://dt1bkp7wf4n6" path="res://entities/player/player.gd" id="1_symyc"]
+[ext_resource type="PackedScene" uid="uid://d2rdr8p54cc5d" path="res://component/player_input_synchronizer_component.tscn" id="2_abrql"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_g4v7s"]
 size = Vector2(18, 32)
@@ -10,6 +11,8 @@ size = Vector2(18, 32)
 [node name="Player" type="CharacterBody2D" unique_id=620339822]
 collision_layer = 0
 script = ExtResource("1_symyc")
+
+[node name="PlayerInputSynchronizerComponent" parent="." unique_id=1337075970 instance=ExtResource("2_abrql")]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1893487873]
 position = Vector2(0, -16)
