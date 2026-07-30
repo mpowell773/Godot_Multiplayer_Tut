@@ -3,6 +3,7 @@ extends Node
 const SERVER_ID: int = 1
 
 var player_scene: PackedScene = preload("uid://egtpvj3ddlhx")
+var enemy_scene: PackedScene = preload("uid://dea55va7q7xfs")
 
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
@@ -16,6 +17,10 @@ func _ready() -> void:
 	
 	peer_ready.rpc_id(SERVER_ID)
 
+	if is_multiplayer_authority():
+		var enemy = enemy_scene.instantiate() as Node2D
+		enemy.global_position = Vector2.ONE * 100
+		add_child(enemy)
 
 @rpc("any_peer", "call_local", "reliable")
 func peer_ready() -> void:
