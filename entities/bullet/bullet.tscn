@@ -20,5 +20,10 @@ script = ExtResource("1_2kyv7")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1246466825]
 replication_config = SubResource("SceneReplicationConfig_2kyv7")
 
+[node name="LifeTimer" type="Timer" parent="." unique_id=915652743]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=783547308]
 texture = ExtResource("1_78c8h")
