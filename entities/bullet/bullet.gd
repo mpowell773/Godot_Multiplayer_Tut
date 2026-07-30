@@ -23,6 +23,10 @@ func start(_direction: Vector2) -> void:
 	rotation = direction.angle()
 
 
+func register_collision() -> void:
+	queue_free()
+
+
 func _on_life_timer_timeout() -> void:
 	if is_multiplayer_authority():
 		queue_free()

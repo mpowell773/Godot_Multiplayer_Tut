@@ -14,6 +14,10 @@ properties/2/path = NodePath(".:direction")
 properties/2/spawn = true
 properties/2/replication_mode = 0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g4v7s"]
+radius = 7.0
+height = 18.0
+
 [node name="Bullet" type="Node2D" unique_id=1198245205]
 script = ExtResource("1_2kyv7")
 
@@ -24,6 +28,14 @@ replication_config = SubResource("SceneReplicationConfig_2kyv7")
 wait_time = 2.0
 one_shot = true
 autostart = true
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1317211349]
+rotation = 1.5707964
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1430111422]
+shape = SubResource("CapsuleShape2D_g4v7s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=783547308]
 texture = ExtResource("1_78c8h")
