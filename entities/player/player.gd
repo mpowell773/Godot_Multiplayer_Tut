@@ -13,11 +13,6 @@ func _ready() -> void:
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("attack"):
-		create_bullet()
-
-
 func _process(_delta: float) -> void:
 	# Client logic
 	var aim_position := weapon_root.global_position + player_input_synchronizer_component.aim_vector
@@ -27,11 +22,16 @@ func _process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		velocity = player_input_synchronizer_component.movement_vector * 100
 		move_and_slide()
+		
+		if player_input_synchronizer_component.is_attack_pressed:
+			create_bullet()
 
 
 func create_bullet() -> void:
 	var bullet := bullet_scene.instantiate() as Bullet
 	bullet.global_position = weapon_root.global_position
-	get_parent().add_child(bullet)
+	# One must use caution when calling functions before adding to the scene tree.
+	# In this case, it's safe, but this should be something to be considered.
 	bullet.start(player_input_synchronizer_component.aim_vector)
+	get_parent().add_child(bullet, true)
 	
