@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://be8fw3vev5nu2" path="res://entities/enemy/enemy.gd" id="1_im2q6"]
 [ext_resource type="Texture2D" uid="uid://cjhqe0oj660u5" path="res://entities/enemy/enemy_medium.png" id="1_ksmh7"]
+[ext_resource type="PackedScene" uid="uid://csgmk4l7bkqi7" path="res://component/health_component.tscn" id="2_3fvr7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_im2q6"]
 properties/0/path = NodePath(".:global_position")
@@ -25,6 +26,9 @@ replication_config = SubResource("SceneReplicationConfig_im2q6")
 [node name="TargetAcquisitionTimer" type="Timer" parent="." unique_id=878789397]
 wait_time = 0.2
 autostart = true
+
+[node name="HealthComponent" parent="." unique_id=275045212 instance=ExtResource("2_3fvr7")]
+max_health = 2
 
 [node name="Area2D" type="Area2D" parent="." unique_id=905579212]
 position = Vector2(0, -12)
