@@ -45,10 +45,8 @@ func check_round_completed() -> void:
 
 
 func get_random_spawn_position() -> Vector2:
-	@warning_ignore("narrowing_conversion")
-	var x := randi_range(0, spawn_rect.size.x)
-	@warning_ignore("narrowing_conversion")
-	var y := randi_range(0, spawn_rect.size.y)
+	var x := randf_range(0, spawn_rect.size.x)
+	var y := randf_range(0, spawn_rect.size.y)
 	return spawn_rect.global_position + Vector2(x, y)
 
 
