@@ -48,6 +48,8 @@ func acquire_target() -> void:
 		target_position = nearest_player.global_position
 
 
+#region Signals
+
 func _on_area_entered(other_area: Area2D) -> void:
 	if not is_multiplayer_authority():
 		return
@@ -63,4 +65,7 @@ func _on_target_acquisition_timer_timeout() -> void:
 
 
 func _on_died() -> void:
+	GameEvents.emit_enemy_died()
 	queue_free()
+
+#endregion
