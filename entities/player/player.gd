@@ -2,7 +2,8 @@ class_name Player
 extends CharacterBody2D
 
 @onready var player_input_synchronizer_component: PlayerInputSynchronizerComponent = $PlayerInputSynchronizerComponent
-@onready var weapon_root: Node2D = $WeaponRoot
+@onready var visuals: Node2D = $Visuals
+@onready var weapon_root: Node2D = $Visuals/WeaponRoot
 @onready var fire_rate_timer: Timer = $FireRateTimer
 @onready var health_component: HealthComponent = $HealthComponent
 
@@ -17,8 +18,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	# Client logic
-	var aim_position := weapon_root.global_position + player_input_synchronizer_component.aim_vector
-	weapon_root.look_at(aim_position)
+	update_aim_position()
 	
 	# Server logic
 	if is_multiplayer_authority():
@@ -27,6 +27,14 @@ func _process(_delta: float) -> void:
 		
 		if player_input_synchronizer_component.is_attack_pressed:
 			try_create_bullet()
+
+
+func update_aim_position() -> void:
+	var aim_vector := player_input_synchronizer_component.aim_vector
+	var aim_position := weapon_root.global_position + aim_vector
+	# Flip sprite in relation to mouse position
+	visuals.scale = Vector2.ONE if aim_vector.x >= 0 else Vector2(-1.0, 1.0)
+	weapon_root.look_at(aim_position)
 
 
 func try_create_bullet() -> void:
