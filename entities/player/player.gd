@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var weapon_root: Node2D = $Visuals/WeaponRoot
 @onready var fire_rate_timer: Timer = $FireRateTimer
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var bullet_scene: PackedScene = preload("uid://cmsm71jq22qef")
 var input_multiplayer_authority: int
@@ -26,7 +27,7 @@ func _process(_delta: float) -> void:
 		move_and_slide()
 		
 		if player_input_synchronizer_component.is_attack_pressed:
-			try_create_bullet()
+			try_fire()
 
 
 func update_aim_position() -> void:
@@ -37,7 +38,7 @@ func update_aim_position() -> void:
 	weapon_root.look_at(aim_position)
 
 
-func try_create_bullet() -> void:
+func try_fire() -> void:
 	if not fire_rate_timer.is_stopped():
 		# Timer is still running, do not create bullet
 		return
@@ -49,6 +50,10 @@ func try_create_bullet() -> void:
 	bullet.start(player_input_synchronizer_component.aim_vector)
 	get_parent().add_child(bullet, true)
 	fire_rate_timer.start()
+	
+	if animation_player.is_playing():
+		animation_player.stop()
+	animation_player.play("fire")
 
 
 func _on_died() -> void:
