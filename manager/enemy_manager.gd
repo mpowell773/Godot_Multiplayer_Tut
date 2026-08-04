@@ -1,4 +1,8 @@
+class_name EnemyManager
 extends Node
+
+
+signal round_began(round_number: int)
 
 const ROUND_BASE_TIME: int = 10
 const ROUND_GROWTH: int = 5
@@ -24,6 +28,10 @@ func _ready() -> void:
 	begin_round()
 
 
+func get_round_time_remaining() -> float:
+	return round_timer.time_left
+
+
 func begin_round() -> void:
 	round_count += 1
 	round_timer.wait_time = ROUND_BASE_TIME + ((round_count - 1) * ROUND_GROWTH)
@@ -33,7 +41,7 @@ func begin_round() -> void:
 		 ((round_count - 1) * ENEMY_SPAWN_TIME_GROWTH)
 	spawn_interval_timer.start()
 	
-	print("beginning round %s" % round_count)
+	round_began.emit(round_count)
 
 
 func check_round_completed() -> void:
