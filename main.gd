@@ -6,6 +6,7 @@ var player_scene: PackedScene = preload("uid://egtpvj3ddlhx")
 
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 @onready var player_spawn_position: Marker2D = $PlayerSpawnPosition
+@onready var enemy_manager: EnemyManager = $EnemyManager
 
 
 func _ready() -> void:
@@ -25,4 +26,4 @@ func peer_ready() -> void:
 	# Using "call_local" helps limit branching logic for client and server calls.
 	var sender_id :=  multiplayer.get_remote_sender_id()
 	multiplayer_spawner.spawn({ "peer_id": sender_id })
-	
+	enemy_manager.synchronize(sender_id)
