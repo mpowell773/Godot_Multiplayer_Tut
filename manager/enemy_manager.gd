@@ -38,7 +38,10 @@ func _ready() -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _synchronize_peer(data: Dictionary) -> void:
-	round_timer.wait_time = data["round_timer_time_left"]
+	var wait_time: float = data["round_timer_time_left"]
+	if wait_time > 0:
+		round_timer.wait_time = data["round_timer_time_left"]
+	
 	if data["round_timer_is_running"]:
 		round_timer.start()
 	round_count = data["round_count"]

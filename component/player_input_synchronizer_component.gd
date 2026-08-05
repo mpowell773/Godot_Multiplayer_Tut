@@ -1,6 +1,7 @@
 class_name PlayerInputSynchronizerComponent
 extends MultiplayerSynchronizer
 
+
 @export var aim_root: Node2D
 
 var movement_vector := Vector2.ZERO

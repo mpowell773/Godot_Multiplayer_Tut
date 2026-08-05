@@ -1,5 +1,6 @@
 extends Node
 
+
 const SERVER_ID: int = 1
 
 var player_scene: PackedScene = preload("uid://egtpvj3ddlhx")
