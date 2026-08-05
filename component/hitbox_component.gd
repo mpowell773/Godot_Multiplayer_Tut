@@ -1,7 +1,6 @@
 class_name HitboxComponent
 extends Area2D
 
-
 signal hit_hurtbox(hurtbox_component: HurtboxComponent)
 
 var damage: int = 1

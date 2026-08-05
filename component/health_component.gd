@@ -1,7 +1,6 @@
 class_name HealthComponent
 extends Node
 
-
 signal died
 
 @export var max_health: int = 1

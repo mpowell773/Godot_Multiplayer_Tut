@@ -1,6 +1,5 @@
 extends CanvasLayer
 
-
 @export var enemy_manager: EnemyManager
 
 @onready var timer_label: Label = %TimerLabel

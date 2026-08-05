@@ -1,7 +1,6 @@
 class_name Bullet
 extends Node2D
 
-
 # SPEED is in pixels per second
 const SPEED: int = 600
 

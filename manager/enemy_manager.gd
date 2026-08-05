@@ -1,7 +1,6 @@
 class_name EnemyManager
 extends Node
 
-
 signal round_changed(round_number: int)
 
 const ROUND_BASE_TIME: int = 10

@@ -1,7 +1,6 @@
 class_name Player
 extends CharacterBody2D
 
-
 @onready var player_input_synchronizer_component: PlayerInputSynchronizerComponent = $PlayerInputSynchronizerComponent
 @onready var visuals: Node2D = $Visuals
 @onready var weapon_root: Node2D = $Visuals/WeaponRoot

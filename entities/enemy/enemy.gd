@@ -1,8 +1,7 @@
 extends CharacterBody2D
 
-
 var target_position: Vector2
-var is_spawning: bool
+var state_machine: CallableStateMachine = CallableStateMachine.new()
 
 @onready var target_acquisition_timer: Timer = $TargetAcquisitionTimer
 @onready var health_component: HealthComponent = $HealthComponent
@@ -10,38 +9,53 @@ var is_spawning: bool
 
 
 func _ready() -> void:
-	target_acquisition_timer.timeout.connect(_on_target_acquisition_timer_timeout)
-	play_spawn_animation()
+	state_machine.add_states(state_spawn, enter_state_spawn, Callable())
+	state_machine.add_states(state_normal, enter_state_normal, Callable())
+	state_machine.set_initial_state(state_spawn)
 	
+	target_acquisition_timer.timeout.connect(_on_target_acquisition_timer_timeout)
+
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
-		acquire_target()
 
 
 func _process(_delta: float) -> void:
-	if is_multiplayer_authority() and not is_spawning:
-		velocity = global_position.direction_to(target_position) * 40
+	state_machine.update()
+	if is_multiplayer_authority():
 		move_and_slide()
-	
-	if not is_spawning:
-		flip()
 
 
-func flip() -> void:
-	visuals.scale = Vector2.ONE if target_position.x > global_position.x\
-		else Vector2(-1, 1)
-
-
-func play_spawn_animation() -> void:
-	is_spawning = true
+func enter_state_spawn() -> void:
 	var tween := create_tween()
 	tween.tween_property(visuals, "scale", Vector2.ONE, 0.4)\
 		.from(Vector2.ZERO)\
 		.set_ease(Tween.EASE_OUT)\
 		.set_trans(Tween.TRANS_BACK)
 	tween.finished.connect(func ():
-		is_spawning = false
+		state_machine.change_state(state_normal)
 	)
+
+
+func state_spawn() -> void:
+	# state_spawn must be defined due to the configuration of the
+	# callable state machine.
+	pass
+
+
+func enter_state_normal() -> void:
+	if is_multiplayer_authority():
+		acquire_target()
+
+
+func state_normal() -> void:
+	if is_multiplayer_authority():
+		velocity = global_position.direction_to(target_position) * 40
+	flip()
+
+
+func flip() -> void:
+	visuals.scale = Vector2.ONE if target_position.x > global_position.x\
+		else Vector2(-1, 1)
 
 
 func acquire_target() -> void:
