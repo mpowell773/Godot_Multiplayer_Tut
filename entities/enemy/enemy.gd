@@ -6,6 +6,16 @@ var default_collision_mask: int
 var default_collision_layer: int
 var alert_tween: Tween
 
+# Whenever current_state is changed, the multiplayer synchronizer will run the
+# according callable to update clients. You can't pass references, but you can
+# pass a primitive like a string that then gets converted in the setter.
+var current_state: String:
+	get:
+		return state_machine.current_state
+	set(value):
+		var state: Callable = Callable.create(self, value)
+		state_machine.change_state(state)
+
 @onready var target_acquisition_timer: Timer = $TargetAcquisitionTimer
 @onready var attack_cooldown_timer: Timer = $AttackCooldownTimer
 @onready var charge_attack_timer: Timer = $ChargeAttackTimer
@@ -15,14 +25,17 @@ var alert_tween: Tween
 @onready var alert_sprite: Sprite2D = $AlertSprite
 
 
+func _notification(what: int) -> void:
+	# Called before _ready(), avoids impromper state configuration
+	if what == NOTIFICATION_SCENE_INSTANTIATED:
+		state_machine.add_states(state_spawn, enter_state_spawn, Callable())
+		state_machine.add_states(state_normal, enter_state_normal, Callable())
+		state_machine.add_states(state_charge_attack, enter_state_charge_attack,\
+			leave_state_charge_attack)
+		state_machine.add_states(state_attack, enter_state_attack, leave_state_attack)
+
+
 func _ready() -> void:
-	state_machine.add_states(state_spawn, enter_state_spawn, Callable())
-	state_machine.add_states(state_normal, enter_state_normal, Callable())
-	state_machine.add_states(state_charge_attack, enter_state_charge_attack,\
-		leave_state_charge_attack)
-	state_machine.add_states(state_attack, enter_state_attack, leave_state_attack)
-	state_machine.set_initial_state(state_spawn)
-	
 	default_collision_mask = collision_mask
 	default_collision_layer = collision_layer
 	hitbox_collision_shape.disabled = true
@@ -30,6 +43,7 @@ func _ready() -> void:
 	
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
+		state_machine.set_initial_state(state_spawn)
 
 
 func _process(_delta: float) -> void:
@@ -94,6 +108,8 @@ func state_charge_attack() -> void:
 		velocity = velocity.lerp(Vector2.ZERO, 1.0 - exp(-15.0 * get_process_delta_time()))
 		if charge_attack_timer.is_stopped():
 			state_machine.change_state(state_attack)
+	
+	flip()
 
 
 func leave_state_charge_attack() -> void:
