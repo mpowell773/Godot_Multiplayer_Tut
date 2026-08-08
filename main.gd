@@ -1,13 +1,16 @@
 extends Node
 
 const SERVER_ID: int = 1
+const MAIN_MENU_SCENE_PATH := "res://ui/main_menu/main_menu.tscn"
 
 var player_scene: PackedScene = preload("uid://egtpvj3ddlhx")
+
 var dead_peers: Array[int] = []
 
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 @onready var player_spawn_position: Marker2D = $PlayerSpawnPosition
 @onready var enemy_manager: EnemyManager = $EnemyManager
+
 
 func _ready() -> void:
 	multiplayer_spawner.spawn_function = func(data):
@@ -23,6 +26,7 @@ func _ready() -> void:
 	
 	peer_ready.rpc_id(SERVER_ID)
 	enemy_manager.round_completed.connect(_on_round_completed)
+	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -40,9 +44,33 @@ func respawn_dead_peers() -> void:
 	dead_peers.clear()
 
 
+func end_game() -> void:
+	multiplayer.multiplayer_peer = null
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
+
+
+func check_game_over() -> void:
+	var is_game_over := true
+	var all_peers := multiplayer.get_peers()
+	all_peers.push_back(SERVER_ID)
+	
+	for peer_id in all_peers:
+		if not dead_peers.has(peer_id):
+			is_game_over = false
+			break
+	
+	if is_game_over:
+		end_game()
+
+
 func _on_player_died(peer_id: int) -> void:
 	dead_peers.append(peer_id)
+	check_game_over()
 
 
 func _on_round_completed() -> void:
 	respawn_dead_peers()
+
+
+func _on_server_disconnected() -> void:
+	end_game()
