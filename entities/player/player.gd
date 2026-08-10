@@ -14,6 +14,7 @@ signal died
 var bullet_scene: PackedScene = preload("uid://cmsm71jq22qef")
 var muzzle_flash_scene: PackedScene = preload("uid://b604dyvkaj7mf")
 var input_multiplayer_authority: int
+var is_dying: bool
 
 
 func _ready() -> void:
@@ -29,6 +30,10 @@ func _process(_delta: float) -> void:
 	
 	# Server logic
 	if is_multiplayer_authority():
+		if is_dying:
+			global_position = Vector2.RIGHT * 1000
+			return
+
 		velocity = player_input_synchronizer_component.movement_vector * 100
 		move_and_slide()
 		
@@ -72,6 +77,16 @@ func play_fire_effects() -> void:
 	get_parent().add_child(muzzle_flash)
 
 
+@rpc("authority", "call_local", "reliable")
+func kill() -> void:
+	is_dying = true
+	# Setting public visibility to false will stop broadcasting inputs to server
+	player_input_synchronizer_component.public_visibility = false
+
+
 func _on_died() -> void:
+	kill.rpc()
+	await get_tree().create_timer(0.5).timeout
+	
 	died.emit()
 	queue_free()
