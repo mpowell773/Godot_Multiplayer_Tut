@@ -77,16 +77,24 @@ func play_fire_effects() -> void:
 	get_parent().add_child(muzzle_flash)
 
 
+func kill():
+	if not is_multiplayer_authority():
+		push_error("Cannont call kill on non-server client")
+		return
+	
+	_kill.rpc()
+	await get_tree().create_timer(0.5).timeout
+	
+	died.emit()
+	queue_free()
+
+
 @rpc("authority", "call_local", "reliable")
-func kill() -> void:
+func _kill() -> void:
 	is_dying = true
 	# Setting public visibility to false will stop broadcasting inputs to server
 	player_input_synchronizer_component.public_visibility = false
 
 
 func _on_died() -> void:
-	kill.rpc()
-	await get_tree().create_timer(0.5).timeout
-	
-	died.emit()
-	queue_free()
+	kill()

@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dughy08vvax50" path="res://component/hurtbox_component.tscn" id="3_dt443"]
 [ext_resource type="Texture2D" uid="uid://d1ynji5wv5xr1" path="res://entities/enemy/attack_alert.png" id="4_d50e0"]
 [ext_resource type="PackedScene" uid="uid://cif3ixv0n531f" path="res://component/hitbox_component.tscn" id="5_4wwj3"]
+[ext_resource type="PackedScene" uid="uid://dd5byuljg7mq1" path="res://component/hit_flash_sprite_component.tscn" id="5_61ikd"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_im2q6"]
 properties/0/path = NodePath(".:global_position")
@@ -64,10 +65,11 @@ texture = ExtResource("4_d50e0")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=320626806]
 
-[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1304602737]
+[node name="HitFlashSpriteComponent" parent="Visuals" unique_id=1134810974 node_paths=PackedStringArray("health_component") instance=ExtResource("5_61ikd")]
 texture = ExtResource("1_ksmh7")
 centered = false
 offset = Vector2(-8, -23)
+health_component = NodePath("../../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=321391050]
 position = Vector2(0, -5)

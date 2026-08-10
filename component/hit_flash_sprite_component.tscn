@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dd5byuljg7mq1"]
+
+[ext_resource type="Shader" uid="uid://vmnqc04cb3vb" path="res://resources/shaders/hit_flash.gdshader" id="1_0flww"]
+[ext_resource type="Script" uid="uid://cdbltbi0y80od" path="res://component/hit_flash_sprite_component.gd" id="3_uq75w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h0yks"]
+resource_local_to_scene = true
+shader = ExtResource("1_0flww")
+shader_parameter/percent = 0.0
+
+[node name="HitFlashSpriteComponent" type="Sprite2D" unique_id=1134810974]
+material = SubResource("ShaderMaterial_h0yks")
+script = ExtResource("3_uq75w")
