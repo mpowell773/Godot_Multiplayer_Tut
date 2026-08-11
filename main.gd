@@ -1,7 +1,11 @@
+class_name Main
 extends Node
 
 const SERVER_ID: int = 1
 const MAIN_MENU_SCENE_PATH := "res://ui/main_menu/main_menu.tscn"
+
+static var background_effects: Node2D
+static var background_mask: Sprite2D
 
 var player_scene: PackedScene = preload("uid://egtpvj3ddlhx")
 
@@ -11,9 +15,14 @@ var player_dictionary: Dictionary[int, Player] = {}
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 @onready var player_spawn_position: Marker2D = $PlayerSpawnPosition
 @onready var enemy_manager: EnemyManager = $EnemyManager
+@onready var _background_effects: Node2D = $BackgroundEffects
+@onready var _background_mask: Sprite2D = %BackgroundMask
 
 
 func _ready() -> void:
+	background_effects = _background_effects
+	background_mask = _background_mask
+	
 	multiplayer_spawner.spawn_function = func(data):
 		var player := player_scene.instantiate() as Player
 		player.name = str(data.peer_id)

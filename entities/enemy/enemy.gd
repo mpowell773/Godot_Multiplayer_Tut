@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var impact_particles_scene: PackedScene = preload("uid://cps4vk7gofgi0")
+var ground_particles_scene: PackedScene = preload("uid://dpu8dwdw0k7hq")
 
 var target_position: Vector2
 var state_machine: CallableStateMachine = CallableStateMachine.new()
@@ -183,9 +184,22 @@ func spawn_hit_particles() -> void:
 	get_parent().add_child(hit_particles)
 
 
+@rpc("authority", "call_local", "unreliable")
+func spawn_ground_particles() -> void:
+	var ground_particles: Node2D = ground_particles_scene.instantiate()
+	
+	var background_node: Node = Main.background_mask
+	if not is_instance_valid(background_node):
+		background_node = get_parent()
+		
+	background_node.add_child(ground_particles)
+	ground_particles.global_position = global_position
+
+
 #region Signals
 
 func _on_died() -> void:
+	spawn_ground_particles.rpc()
 	GameEvents.emit_enemy_died()
 	queue_free()
 
