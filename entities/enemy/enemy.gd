@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+var impact_particles_scene: PackedScene = preload("uid://cps4vk7gofgi0")
+
 var target_position: Vector2
 var state_machine: CallableStateMachine = CallableStateMachine.new()
 var default_collision_mask: int
@@ -23,6 +25,7 @@ var current_state: String:
 @onready var visuals: Node2D = $Visuals
 @onready var hitbox_collision_shape: CollisionShape2D = %HitboxCollisionShape
 @onready var alert_sprite: Sprite2D = $AlertSprite
+@onready var hurtbox_component: HurtboxComponent = $HurtboxComponent
 
 
 func _notification(what: int) -> void:
@@ -44,6 +47,7 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
 		state_machine.set_initial_state(state_spawn)
+		hurtbox_component.hit_by_hitbox.connect(_on_hit_by_hitbox)
 
 
 func _process(_delta: float) -> void:
@@ -172,10 +176,21 @@ func acquire_target() -> void:
 		target_position = nearest_player.global_position
 
 
+@rpc("authority", "call_local", "unreliable")
+func spawn_hit_particles() -> void:
+	var hit_particles: Node2D = impact_particles_scene.instantiate()
+	hit_particles.global_position = hurtbox_component.global_position
+	get_parent().add_child(hit_particles)
+
+
 #region Signals
 
 func _on_died() -> void:
 	GameEvents.emit_enemy_died()
 	queue_free()
+
+
+func _on_hit_by_hitbox() -> void:
+	spawn_hit_particles.rpc()
 
 #endregion
