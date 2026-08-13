@@ -36,10 +36,12 @@ func _ready() -> void:
 		return player
 	
 	peer_ready.rpc_id(SERVER_ID)
-	enemy_manager.round_completed.connect(_on_round_completed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	
 	if is_multiplayer_authority():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+		enemy_manager.game_completed.connect(_on_game_completed)
+		enemy_manager.round_completed.connect(_on_round_completed)
 
 @rpc("any_peer", "call_local", "reliable")
 func peer_ready() -> void:
@@ -89,6 +91,10 @@ func _on_player_died(peer_id: int) -> void:
 
 func _on_round_completed() -> void:
 	respawn_dead_peers()
+
+
+func _on_game_completed() -> void:
+	end_game()
 
 
 func _on_server_disconnected() -> void:
