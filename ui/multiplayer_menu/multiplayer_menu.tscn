@@ -14,20 +14,72 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 script = ExtResource("1_tvsvp")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=502350796]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1863669527]
+custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/separation = 16
 
-[node name="HostButton" type="Button" parent="HBoxContainer" unique_id=1594724405]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=144968778]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer" unique_id=1613289770]
+layout_mode = 2
+text = "Display Name: "
+
+[node name="DisplayNameTextEdit" type="TextEdit" parent="VBoxContainer/VBoxContainer" unique_id=961220189]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Display Name"
+scroll_fit_content_height = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=502350796]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1416569483]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=220870947]
+layout_mode = 2
+text = "Host Port:"
+
+[node name="PortTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1274726123]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Host Port"
+scroll_fit_content_height = true
+
+[node name="HostButton" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1594724405]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Host"
 
-[node name="JoinButton" type="Button" parent="HBoxContainer" unique_id=1835159909]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=762720449]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1385475658]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1583210950]
+layout_mode = 2
+text = "IP Address:"
+
+[node name="IPAddressTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1941124168]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "IP Address"
+scroll_fit_content_height = true
+
+[node name="JoinButton" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1835159909]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Join"
 
 [node name="BackButton" type="Button" parent="." unique_id=1272712695]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
