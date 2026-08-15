@@ -9,7 +9,7 @@ const ROUND_BASE_TIME: int = 10
 const ROUND_GROWTH: int = 5
 const BASE_ENEMY_SPAWN_TIME := 2.0
 const ENEMY_SPAWN_TIME_GROWTH := -0.15
-const MAX_ROUNDS: int = 1
+const MAX_ROUNDS: int = 10
 
 @export var enemy_scene: PackedScene
 @export var enemy_spawn_root: Node
