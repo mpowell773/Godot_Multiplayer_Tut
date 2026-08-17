@@ -3,6 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://dupou1i7g1obu" path="res://assets/ui/buttons.png" id="1_7ct1h"]
 [ext_resource type="FontFile" uid="uid://b8qrpq462xs5d" path="res://resources/font/KarenFat.ttf" id="1_d4nwg"]
 [ext_resource type="Texture2D" uid="uid://br3l30ehuchsc" path="res://assets/ui/panel.png" id="2_886mr"]
+[ext_resource type="Texture2D" uid="uid://ua54e6mwi4gq" path="res://assets/ui/progress_bar_outline.png" id="3_owntx"]
+[ext_resource type="Texture2D" uid="uid://cj4qggv7paa71" path="res://assets/ui/progress_bar_fill.png" id="4_aaf3v"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b751m"]
 texture = ExtResource("1_7ct1h")
@@ -49,6 +51,22 @@ texture_margin_right = 4.0
 texture_margin_bottom = 5.0
 region_rect = Rect2(0, 0, 32, 32)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yp2uj"]
+texture = ExtResource("3_owntx")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+region_rect = Rect2(0, 0, 8, 8)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yf5fn"]
+texture = ExtResource("4_aaf3v")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+modulate_color = Color(0.83137256, 0.17254902, 0.30980393, 1)
+
 [resource]
 default_font = ExtResource("1_d4nwg")
 default_font_size = 16
@@ -63,3 +81,5 @@ Button/styles/hover = SubResource("StyleBoxTexture_886mr")
 Button/styles/normal = SubResource("StyleBoxTexture_7mycd")
 Button/styles/pressed = SubResource("StyleBoxTexture_7ct1h")
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_g4v7s")
+ProgressBar/styles/background = SubResource("StyleBoxTexture_yp2uj")
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_yf5fn")
