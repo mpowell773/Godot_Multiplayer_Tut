@@ -15,8 +15,6 @@ func _ready() -> void:
 	quit_button.pressed.connect(_on_quit_button_pressed)
 
 
-#region Signals
-
 func _on_single_player_button_pressed() -> void:
 	get_tree().change_scene_to_packed(main_scene)
 
@@ -27,5 +25,3 @@ func _on_multiplayer_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
-
-#endregion

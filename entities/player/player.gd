@@ -10,15 +10,18 @@ signal died
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var barrel_position: Marker2D = %BarrelPosition
+@onready var display_name_label: Label = $DisplayNameLabel
 
 var bullet_scene: PackedScene = preload("uid://cmsm71jq22qef")
 var muzzle_flash_scene: PackedScene = preload("uid://b604dyvkaj7mf")
 var input_multiplayer_authority: int
 var is_dying: bool
+var display_name: String
 
 
 func _ready() -> void:
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
+	display_name_label.text = display_name
 	
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
@@ -39,6 +42,10 @@ func _process(_delta: float) -> void:
 		
 		if player_input_synchronizer_component.is_attack_pressed:
 			try_fire()
+
+
+func set_display_name(incoming_name: String) -> void:
+	display_name = incoming_name
 
 
 func update_aim_position() -> void:

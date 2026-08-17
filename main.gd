@@ -11,6 +11,7 @@ var player_scene: PackedScene = preload("uid://egtpvj3ddlhx")
 
 var dead_peers: Array[int] = []
 var player_dictionary: Dictionary[int, Player] = {}
+var player_name_dictionary: Dictionary[int, String] = {}
 
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 @onready var player_spawn_position: Marker2D = $PlayerSpawnPosition
@@ -25,6 +26,8 @@ func _ready() -> void:
 	
 	multiplayer_spawner.spawn_function = func(data):
 		var player := player_scene.instantiate() as Player
+		player.set_display_name(data.display_name)
+		# player.name is the name of the node
 		player.name = str(data.peer_id)
 		player.input_multiplayer_authority = data.peer_id
 		player.global_position = player_spawn_position.global_position
@@ -35,7 +38,7 @@ func _ready() -> void:
 		player_dictionary[data.peer_id] = player
 		return player
 	
-	peer_ready.rpc_id(SERVER_ID)
+	peer_ready.rpc_id(SERVER_ID, MultiplayerConfig.display_name)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
 	if is_multiplayer_authority():
@@ -44,11 +47,14 @@ func _ready() -> void:
 		enemy_manager.round_completed.connect(_on_round_completed)
 
 @rpc("any_peer", "call_local", "reliable")
-func peer_ready() -> void:
-	# remote_sender_id will also consider server remote due to "call_local" in RPC.
+func peer_ready(display_name: String) -> void:
 	# Using "call_local" helps limit branching logic for client and server calls.
 	var sender_id :=  multiplayer.get_remote_sender_id()
-	multiplayer_spawner.spawn({ "peer_id": sender_id })
+	player_name_dictionary[sender_id] = display_name
+	multiplayer_spawner.spawn({
+		"peer_id": sender_id,
+		"display_name": player_name_dictionary[sender_id] 
+	})
 	enemy_manager.synchronize(sender_id)
 
 
@@ -57,7 +63,10 @@ func respawn_dead_peers() -> void:
 	for peer_id in dead_peers:
 		if not all_peers.has(peer_id):
 			continue
-		multiplayer_spawner.spawn({ "peer_id": peer_id })
+		multiplayer_spawner.spawn({
+			"peer_id": peer_id,
+			"display_name": player_name_dictionary[peer_id]
+		})
 	dead_peers.clear()
 
 
