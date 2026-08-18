@@ -73,7 +73,8 @@ theme_override_constants/separation = 0
 layout_mode = 2
 text = "Player Name"
 
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1249623627]
+[node name="HealthProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1249623627]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 mouse_filter = 2

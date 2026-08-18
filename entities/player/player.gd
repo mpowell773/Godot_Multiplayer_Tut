@@ -16,6 +16,7 @@ var bullet_scene: PackedScene = preload("uid://cmsm71jq22qef")
 var muzzle_flash_scene: PackedScene = preload("uid://b604dyvkaj7mf")
 var input_multiplayer_authority: int
 var is_dying: bool
+var is_respawn: bool
 var display_name: String
 
 
@@ -28,6 +29,9 @@ func _ready() -> void:
 		display_name_label.text = display_name
 	
 	if is_multiplayer_authority():
+		if is_respawn:
+			health_component.current_health = 1
+			
 		health_component.died.connect(_on_died)
 
 
