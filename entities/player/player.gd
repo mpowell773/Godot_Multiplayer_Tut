@@ -23,7 +23,10 @@ var display_name: String
 func _ready() -> void:
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
 	
-	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
+	var is_single_player := multiplayer.multiplayer_peer is OfflineMultiplayerPeer
+	var is_client_authority := player_input_synchronizer_component.is_multiplayer_authority()
+	
+	if is_single_player or is_client_authority:
 		display_name_label.visible = false
 	else:
 		display_name_label.text = display_name
