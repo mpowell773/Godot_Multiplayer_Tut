@@ -22,7 +22,11 @@ func connect_player(player: Player) -> void:
 	# This allows the player to call _ready() upon itself before connect_player()
 	# calls.
 	(func():
-		display_name_label.text = player.display_name
+		if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
+			display_name_label.text = "Player"
+		else:
+			display_name_label.text = player.display_name
+			
 		player.health_component.health_changed.connect(_on_health_changed)
 		update_health(player.health_component.current_health,\
 			player.health_component.max_health)
