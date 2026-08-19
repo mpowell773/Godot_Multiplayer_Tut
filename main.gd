@@ -1,7 +1,6 @@
 class_name Main
 extends Node
 
-const SERVER_ID: int = 1
 const MAIN_MENU_SCENE_PATH := "res://ui/main_menu/main_menu.tscn"
 
 static var background_effects: Node2D
@@ -19,6 +18,7 @@ var player_name_dictionary: Dictionary[int, String] = {}
 @onready var _background_effects: Node2D = $BackgroundEffects
 @onready var _background_mask: Sprite2D = %BackgroundMask
 @onready var game_ui: GameUI = $GameUI
+@onready var pause_menu: PauseMenu = $PauseMenu
 
 
 func _ready() -> void:
@@ -45,13 +45,15 @@ func _ready() -> void:
 		player_dictionary[data.peer_id] = player
 		return player
 	
-	peer_ready.rpc_id(SERVER_ID, MultiplayerConfig.display_name)
+	peer_ready.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, MultiplayerConfig.display_name)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	pause_menu.quit.connect(_on_quit)
 	
 	if is_multiplayer_authority():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 		enemy_manager.game_completed.connect(_on_game_completed)
 		enemy_manager.round_completed.connect(_on_round_completed)
+		
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -81,6 +83,7 @@ func respawn_dead_peers() -> void:
 
 
 func end_game() -> void:
+	get_tree().paused = false
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
@@ -99,7 +102,7 @@ func check_game_over() -> void:
 
 func get_all_peers() -> PackedInt32Array:
 	var all_peers := multiplayer.get_peers()
-	all_peers.push_back(SERVER_ID)
+	all_peers.push_back(MultiplayerPeer.TARGET_PEER_SERVER)
 	return all_peers
 
 
@@ -126,3 +129,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 		if is_instance_valid(player):
 			player.kill()
 		player_dictionary.erase(peer_id)
+
+
+func _on_quit() -> void:
+	end_game()

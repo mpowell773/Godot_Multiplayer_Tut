@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://s35nn25yj5lp"]
 
+[ext_resource type="Script" uid="uid://bpg1abra6jyjq" path="res://ui/pause_menu/pause_menu.gd" id="1_jbgdu"]
 [ext_resource type="PackedScene" uid="uid://ceowa1qblaeot" path="res://autoload/background.tscn" id="1_mnjdh"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=2053690183]
+process_mode = 3
+script = ExtResource("1_jbgdu")
 
 [node name="Background" parent="." unique_id=778596402 instance=ExtResource("1_mnjdh")]
 scale = Vector2(0.99999994, 0.99999994)
@@ -27,9 +30,11 @@ text = "PAUSED"
 horizontal_alignment = 1
 
 [node name="ResumeButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1956618007]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Resume"
 
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=419359589]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Quit to Menu"
