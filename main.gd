@@ -19,6 +19,7 @@ var player_name_dictionary: Dictionary[int, String] = {}
 @onready var _background_mask: Sprite2D = %BackgroundMask
 @onready var game_ui: GameUI = $GameUI
 @onready var pause_menu: PauseMenu = $PauseMenu
+@onready var lobby_manager: LobbyManager = $LobbyManager
 
 
 func _ready() -> void:
@@ -46,8 +47,10 @@ func _ready() -> void:
 		return player
 	
 	peer_ready.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, MultiplayerConfig.display_name)
+	
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	pause_menu.quit.connect(_on_quit)
+	lobby_manager.all_peers_readied.connect(_on_all_peers_readied)
 	
 	if is_multiplayer_authority():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -133,3 +136,8 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 func _on_quit() -> void:
 	end_game()
+
+
+func _on_all_peers_readied() -> void:
+	lobby_manager.close_lobby()
+	enemy_manager.start()
