@@ -23,8 +23,7 @@ func _ready() -> void:
 	
 	var is_single_player := multiplayer.multiplayer_peer is OfflineMultiplayerPeer
 	ready_up_container.visible = not is_single_player
-	ready_up_container.visible = is_single_player
-	round_info_container.visible = false
+	round_info_container.visible = is_single_player
 	ready_label.visible = false
 	not_ready_label.visible = true
 

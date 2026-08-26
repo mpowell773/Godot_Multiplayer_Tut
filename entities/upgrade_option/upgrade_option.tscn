@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://egb6it4cxmj6"]
+
+[ext_resource type="Script" uid="uid://b8kjflcyq0yq0" path="res://entities/upgrade_option/upgrade_option.gd" id="1_yuvji"]
+[ext_resource type="PackedScene" uid="uid://csgmk4l7bkqi7" path="res://component/health_component.tscn" id="2_34j1a"]
+[ext_resource type="PackedScene" uid="uid://dughy08vvax50" path="res://component/hurtbox_component.tscn" id="3_jncuo"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_g4v7s"]
+size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yf5fn"]
+radius = 8.0
+
+[node name="UpgradeOption" type="Node2D" unique_id=892726910]
+script = ExtResource("1_yuvji")
+
+[node name="HealthComponent" parent="." unique_id=275045212 instance=ExtResource("2_34j1a")]
+max_health = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1402236308]
+texture = SubResource("PlaceholderTexture2D_g4v7s")
+
+[node name="HurtboxComponent" parent="." unique_id=1639324941 node_paths=PackedStringArray("health_component") instance=ExtResource("3_jncuo")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=438962297]
+shape = SubResource("CircleShape2D_yf5fn")
