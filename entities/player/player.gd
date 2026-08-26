@@ -74,6 +74,7 @@ func try_fire() -> void:
 	
 	var bullet := bullet_scene.instantiate() as Bullet
 	bullet.global_position = barrel_position.global_position
+	bullet.source_peer_id = player_input_synchronizer_component.get_multiplayer_authority()
 	# One must use caution when calling functions before adding to the scene tree.
 	# In this case, it's safe, but this should be something to be considered.
 	bullet.start(player_input_synchronizer_component.aim_vector)

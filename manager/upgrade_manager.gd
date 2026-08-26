@@ -30,10 +30,28 @@ func generate_upgrade_options() -> void:
 			available_upgrades[0],
 			available_upgrades[0]
 		]
-		set_upgrade_options.rpc_id(connected_peer_id, selected_upgrades)
+		var upgrade_resources: Array[UpgradeResource] = [
+			available_upgrades[0],
+			available_upgrades[0],
+			available_upgrades[0]
+		]
+		var upgrade_options := create_upgrade_option_nodes(upgrade_resources)
+		var upgrade_names: Array[String] = []
+		for upgrade_option in upgrade_options:
+			upgrade_option.set_peer_id_filter(connected_peer_id)
+			# Create a unique node name for each upgrade option that will keep the
+			# tree path in sync across clients without conflict of same name
+			var uid := ResourceUID.create_id()
+			upgrade_option.name = str(uid)
+			upgrade_names.append(upgrade_option.name)
+		
+		if connected_peer_id != MultiplayerPeer.TARGET_PEER_SERVER:
+			set_upgrade_options.rpc_id(connected_peer_id, selected_upgrades, upgrade_names)
 
 
-func show_upgrade_resources(upgrade_resources: Array[UpgradeResource]) -> void:
+func create_upgrade_option_nodes(upgrade_resources: Array[UpgradeResource]) -> Array[UpgradeOption]:
+	
+	var result: Array[UpgradeOption] = []
 	var initial_x: int = -64
 	var x_difference: int = 64
 	
@@ -45,34 +63,32 @@ func show_upgrade_resources(upgrade_resources: Array[UpgradeResource]) -> void:
 		upgrade_option.global_position = spawn_position.global_position
 		# Spreads 3 upgrades evenly across the arena.
 		upgrade_option.global_position += Vector2.RIGHT * (initial_x + (x_difference * i))
-		
 		spawn_root.add_child(upgrade_option)
 		
 		upgrade_option.selected.connect(_on_upgrade_option_selected)
+		result.append(upgrade_option)
+
+	return result
 
 
 @rpc("authority", "call_local", "reliable")
-func set_upgrade_options(upgrade_ids: Array[String]) -> void:
-	var upgrade_resouces: Array[UpgradeResource] = []
-	
+func set_upgrade_options(upgrade_ids: Array[String], upgrade_names: Array[String]) -> void:
+	var upgrade_resources: Array[UpgradeResource] = []
 	for upgrade_id in upgrade_ids:
 		var resource_index := available_upgrades.find_custom(func (item: UpgradeResource):
 			return item.id == upgrade_id
 		)
-		upgrade_resouces.append(available_upgrades[resource_index])
+		upgrade_resources.append(available_upgrades[resource_index])
 	
-	show_upgrade_resources(upgrade_resouces)
+	var created_nodes := create_upgrade_option_nodes(upgrade_resources)
+	for i in created_nodes.size():
+		created_nodes[i].name = upgrade_names[i]
 
 
-@rpc("any_peer", "call_local", "reliable")
-func notify_upgrade_selected(upgrade_index: int) -> void:
-	if not is_multiplayer_authority():
-		return
-	
-	var peer_id := multiplayer.get_remote_sender_id()
+func handle_upgrade_selected(upgrade_index: int, for_peer_id: int) -> void:
 	print("Peer %s has selected upgrade with id %s" %[
-		peer_id,
-		peer_id_to_upgrade_options[peer_id][upgrade_index].id
+		for_peer_id,
+		peer_id_to_upgrade_options[for_peer_id][upgrade_index].id
 	])
 
 
@@ -80,5 +96,5 @@ func _on_round_completed() -> void:
 	generate_upgrade_options()
 
 
-func _on_upgrade_option_selected(upgrade_index: int) -> void:
-	notify_upgrade_selected.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, upgrade_index)
+func _on_upgrade_option_selected(upgrade_index: int, for_peer_id: int) -> void:
+	handle_upgrade_selected(upgrade_index, for_peer_id)
