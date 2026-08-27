@@ -6,11 +6,29 @@ extends Node
 @export var spawn_root: Node2D
 @export var available_upgrades: Array[UpgradeResource]
 
+static var instance: UpgradeManager
+
 var upgrade_option_scene: PackedScene = preload("uid://egb6it4cxmj6")
 var peer_id_to_upgrade_options: Dictionary[int, Array] = {}
+var peer_id_to_upgrades_acquired: Dictionary[int, Array] = {}
+
+
+static func peer_has_upgrade(peer_id: int, upgrade_id: String) -> bool:
+	if not is_instance_valid(instance):
+		return false
+	
+	if not instance.peer_id_to_upgrades_acquired.has(peer_id):
+		return false
+
+	var index := instance.peer_id_to_upgrades_acquired[peer_id].find_custom(func (item):
+		return item.id == upgrade_id
+	)
+	
+	return index > -1
 
 
 func _ready() -> void:
+	instance = self
 	enemy_manager.round_completed.connect(_on_round_completed)
 
 
@@ -22,22 +40,17 @@ func generate_upgrade_options() -> void:
 	connected_peer_ids.append(MultiplayerPeer.TARGET_PEER_SERVER)
 	
 	for connected_peer_id in connected_peer_ids:
-		peer_id_to_upgrade_options[connected_peer_id] = [
-			available_upgrades[0],
-			available_upgrades[0],
-			available_upgrades[0]
-		]
-		var upgrade_resources: Array[UpgradeResource] = [
-			available_upgrades[0],
-			available_upgrades[0],
-			available_upgrades[0]
-		]
+		var available_upgrades_copy := Array(available_upgrades)
+		available_upgrades_copy.shuffle()
 		
-		var upgrade_options := create_upgrade_option_nodes(upgrade_resources)
+		var chosen_upgrades := available_upgrades_copy.slice(0, 3)
+		peer_id_to_upgrade_options[connected_peer_id] = chosen_upgrades
+	
+		var upgrade_options := create_upgrade_option_nodes(chosen_upgrades)
 		var selected_upgrades: Array[Dictionary] = []
 		for i in upgrade_options.size():
 			var upgrade_option := upgrade_options[i]
-			var upgrade_resource := upgrade_resources[i]
+			var upgrade_resource := chosen_upgrades[i] as UpgradeResource
 			upgrade_option.set_peer_id_filter(connected_peer_id)
 			# Create a unique node name for each upgrade option that will keep the
 			# tree path in sync across clients without conflict of same name
@@ -93,6 +106,14 @@ func set_upgrade_options(selected_upgrades: Array[Dictionary]) -> void:
 
 
 func handle_upgrade_selected(upgrade_index: int, for_peer_id: int) -> void:
+	# Initialize peer's entry in dict ...upgrades_acquired
+	if not peer_id_to_upgrades_acquired.has(for_peer_id):
+		peer_id_to_upgrades_acquired[for_peer_id] = []
+	
+	var upgrade_array := peer_id_to_upgrades_acquired[for_peer_id]
+	var chosen_upgrade = peer_id_to_upgrade_options[for_peer_id][upgrade_index]
+	upgrade_array.append(chosen_upgrade)
+	
 	print("Peer %s has selected upgrade with id %s" %[
 		for_peer_id,
 		peer_id_to_upgrade_options[for_peer_id][upgrade_index].id
