@@ -14,6 +14,8 @@ func _ready() -> void:
 	enemy_manager.round_completed.connect(_on_round_completed)
 
 
+## Server-side only. To propagate upgrade options to clients, set_upgrade_options must
+## be rpc'd.
 func generate_upgrade_options() -> void:
 	peer_id_to_upgrade_options.clear()
 	var connected_peer_ids := multiplayer.get_peers()
@@ -44,6 +46,8 @@ func generate_upgrade_options() -> void:
 			var uid := ResourceUID.create_id()
 			upgrade_option.name = str(uid)
 			upgrade_names.append(upgrade_option.name)
+			# Hides peer nodes from the host while keeping them in the tree.
+			upgrade_option.visible = connected_peer_id == MultiplayerPeer.TARGET_PEER_SERVER
 		
 		if connected_peer_id != MultiplayerPeer.TARGET_PEER_SERVER:
 			set_upgrade_options.rpc_id(connected_peer_id, selected_upgrades, upgrade_names)

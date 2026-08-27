@@ -29,5 +29,14 @@ func set_upgrade_resource(upgrade_resource: UpgradeResource) -> void:
 	assigned_resource = upgrade_resource
 
 
+@rpc("authority", "call_local", "reliable")
+func kill() -> void:
+	queue_free()
+
+
 func _on_died() -> void:
 	selected.emit(upgrade_index, peer_id_filter)
+	
+	kill.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
+	if peer_id_filter != MultiplayerPeer.TARGET_PEER_SERVER:
+		kill.rpc_id(peer_id_filter)
