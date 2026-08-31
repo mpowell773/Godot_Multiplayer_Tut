@@ -4,6 +4,8 @@ extends CharacterBody2D
 signal died
 
 const BASE_MOVEMENT_SPEED := 100.0
+const BASE_FIRE_RATE := 0.25
+const BASE_BULLET_DAMAGE: int = 1
 
 @onready var player_input_synchronizer_component: PlayerInputSynchronizerComponent = $PlayerInputSynchronizerComponent
 @onready var visuals: Node2D = $Visuals
@@ -24,26 +26,26 @@ var display_name: String
 
 func _ready() -> void:
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
-	
+
 	var is_single_player := multiplayer.multiplayer_peer is OfflineMultiplayerPeer
 	var is_client_authority := player_input_synchronizer_component.is_multiplayer_authority()
-	
+
 	if is_single_player or is_client_authority:
 		display_name_label.visible = false
 	else:
 		display_name_label.text = display_name
-	
+
 	if is_multiplayer_authority():
 		if is_respawn:
 			health_component.current_health = 1
-			
+
 		health_component.died.connect(_on_died)
 
 
 func _process(_delta: float) -> void:
 	# Client logic
 	update_aim_position()
-	
+
 	# Server logic
 	if is_multiplayer_authority():
 		if is_dying:
@@ -52,18 +54,38 @@ func _process(_delta: float) -> void:
 
 		velocity = player_input_synchronizer_component.movement_vector * get_movement_speed()
 		move_and_slide()
-		
+
 		if player_input_synchronizer_component.is_attack_pressed:
 			try_fire()
 
 
 func get_movement_speed() -> float:
-	var has_movement_upgrade := UpgradeManager.peer_has_upgrade(
+	var movement_upgrade_count := UpgradeManager.get_peer_upgrade_count(
 		player_input_synchronizer_component.get_multiplayer_authority(),
 		"movement_speed"
 	)
-	
-	return BASE_MOVEMENT_SPEED if not has_movement_upgrade else BASE_MOVEMENT_SPEED * 1.15
+
+	var speed_modifier := 1.0 + (0.15 * movement_upgrade_count)
+
+	return BASE_MOVEMENT_SPEED * speed_modifier
+
+
+func get_fire_rate() -> float:
+	var fire_rate_count := UpgradeManager.get_peer_upgrade_count(
+		player_input_synchronizer_component.get_multiplayer_authority(),
+		"fire_rate"
+	)
+
+	return BASE_FIRE_RATE * (1 - (0.1 * fire_rate_count))
+
+
+func get_bullet_damage() -> int:
+	var damage_count := UpgradeManager.get_peer_upgrade_count(
+	player_input_synchronizer_component.get_multiplayer_authority(),
+	"damage"
+)
+
+	return BASE_BULLET_DAMAGE + damage_count
 
 
 func set_display_name(incoming_name: String) -> void:
@@ -82,16 +104,19 @@ func try_fire() -> void:
 	if not fire_rate_timer.is_stopped():
 		# Timer is still running, do not create bullet
 		return
-	
+
 	var bullet := bullet_scene.instantiate() as Bullet
+	bullet.damage = get_bullet_damage()
 	bullet.global_position = barrel_position.global_position
 	bullet.source_peer_id = player_input_synchronizer_component.get_multiplayer_authority()
 	# One must use caution when calling functions before adding to the scene tree.
 	# In this case, it's safe, but this should be something to be considered.
 	bullet.start(player_input_synchronizer_component.aim_vector)
 	get_parent().add_child(bullet, true)
+
+	fire_rate_timer.wait_time = get_fire_rate()
 	fire_rate_timer.start()
-	
+
 	play_fire_effects.rpc()
 
 
@@ -100,12 +125,12 @@ func play_fire_effects() -> void:
 	if animation_player.is_playing():
 		animation_player.stop()
 	animation_player.play("fire")
-	
+
 	var muzzle_flash := muzzle_flash_scene.instantiate() as GPUParticles2D
 	muzzle_flash.global_position = barrel_position.global_position
 	muzzle_flash.rotation = barrel_position.global_rotation
 	get_parent().add_child(muzzle_flash)
-	
+
 	if player_input_synchronizer_component.is_multiplayer_authority():
 		GameCamera.shake(1.0)
 
@@ -114,10 +139,10 @@ func kill():
 	if not is_multiplayer_authority():
 		push_error("Cannont call kill on non-server client")
 		return
-	
+
 	_kill.rpc()
 	await get_tree().create_timer(0.5).timeout
-	
+
 	died.emit()
 	queue_free()
 

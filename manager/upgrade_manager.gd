@@ -10,21 +10,24 @@ static var instance: UpgradeManager
 
 var upgrade_option_scene: PackedScene = preload("uid://egb6it4cxmj6")
 var peer_id_to_upgrade_options: Dictionary[int, Array] = {}
-var peer_id_to_upgrades_acquired: Dictionary[int, Array] = {}
+var peer_id_to_upgrades_acquired: Dictionary[int, Dictionary] = {}
+
+
+static func get_peer_upgrade_count(peer_id: int, upgrade_id: String) -> int:
+	if not is_instance_valid(instance):
+		return 0
+
+	if not instance.peer_id_to_upgrades_acquired.has(peer_id):
+		return 0
+
+	if not instance.peer_id_to_upgrades_acquired[peer_id].has(upgrade_id):
+		return 0
+
+	return instance.peer_id_to_upgrades_acquired[peer_id][upgrade_id]
 
 
 static func peer_has_upgrade(peer_id: int, upgrade_id: String) -> bool:
-	if not is_instance_valid(instance):
-		return false
-	
-	if not instance.peer_id_to_upgrades_acquired.has(peer_id):
-		return false
-
-	var index := instance.peer_id_to_upgrades_acquired[peer_id].find_custom(func (item):
-		return item.id == upgrade_id
-	)
-	
-	return index > -1
+	return get_peer_upgrade_count(peer_id, upgrade_id) > 0
 
 
 func _ready() -> void:
@@ -38,14 +41,14 @@ func generate_upgrade_options() -> void:
 	peer_id_to_upgrade_options.clear()
 	var connected_peer_ids := multiplayer.get_peers()
 	connected_peer_ids.append(MultiplayerPeer.TARGET_PEER_SERVER)
-	
+
 	for connected_peer_id in connected_peer_ids:
 		var available_upgrades_copy := Array(available_upgrades)
 		available_upgrades_copy.shuffle()
-		
+
 		var chosen_upgrades := available_upgrades_copy.slice(0, 3)
 		peer_id_to_upgrade_options[connected_peer_id] = chosen_upgrades
-	
+
 		var upgrade_options := create_upgrade_option_nodes(chosen_upgrades)
 		var selected_upgrades: Array[Dictionary] = []
 		for i in upgrade_options.size():
@@ -56,35 +59,35 @@ func generate_upgrade_options() -> void:
 			# tree path in sync across clients without conflict of same name
 			var uid := ResourceUID.create_id()
 			upgrade_option.name = str(uid)
-			
+
 			selected_upgrades.append({
 				"name": upgrade_option.name,
 				"id": upgrade_resource.id
 			})
-			
+
 			# Hides peer nodes from the host while keeping them in the tree.
 			upgrade_option.visible = connected_peer_id == MultiplayerPeer.TARGET_PEER_SERVER
-		
+
 		if connected_peer_id != MultiplayerPeer.TARGET_PEER_SERVER:
 			set_upgrade_options.rpc_id(connected_peer_id, selected_upgrades)
 
 
 func create_upgrade_option_nodes(upgrade_resources: Array[UpgradeResource]) -> Array[UpgradeOption]:
-	
+
 	var result: Array[UpgradeOption] = []
 	var initial_x: int = -64
 	var x_difference: int = 64
-	
+
 	for i in range(upgrade_resources.size()):
 		var upgrade_option := upgrade_option_scene.instantiate() as UpgradeOption
 		upgrade_option.set_upgrade_index(i)
 		upgrade_option.set_upgrade_resource(upgrade_resources[i])
-		
+
 		upgrade_option.global_position = spawn_position.global_position
 		# Spreads 3 upgrades evenly across the arena.
 		upgrade_option.global_position += Vector2.RIGHT * (initial_x + (x_difference * i))
 		spawn_root.add_child(upgrade_option)
-		
+
 		upgrade_option.selected.connect(_on_upgrade_option_selected)
 		result.append(upgrade_option)
 
@@ -99,7 +102,7 @@ func set_upgrade_options(selected_upgrades: Array[Dictionary]) -> void:
 			return item.id == upgrade.id
 		)
 		upgrade_resources.append(available_upgrades[resource_index])
-	
+
 	var created_nodes := create_upgrade_option_nodes(upgrade_resources)
 	for i in created_nodes.size():
 		created_nodes[i].name = selected_upgrades[i].name
@@ -108,12 +111,17 @@ func set_upgrade_options(selected_upgrades: Array[Dictionary]) -> void:
 func handle_upgrade_selected(upgrade_index: int, for_peer_id: int) -> void:
 	# Initialize peer's entry in dict ...upgrades_acquired
 	if not peer_id_to_upgrades_acquired.has(for_peer_id):
-		peer_id_to_upgrades_acquired[for_peer_id] = []
-	
-	var upgrade_array := peer_id_to_upgrades_acquired[for_peer_id]
-	var chosen_upgrade = peer_id_to_upgrade_options[for_peer_id][upgrade_index]
-	upgrade_array.append(chosen_upgrade)
-	
+		peer_id_to_upgrades_acquired[for_peer_id] = {}
+
+	var upgrade_dictionary := peer_id_to_upgrades_acquired[for_peer_id]
+	var chosen_upgrade := peer_id_to_upgrade_options[for_peer_id][upgrade_index] as UpgradeResource
+
+	var upgrade_count: int = 0
+	if upgrade_dictionary.has(chosen_upgrade.id):
+		upgrade_count = upgrade_dictionary[chosen_upgrade.id]
+
+	upgrade_dictionary[chosen_upgrade.id] = upgrade_count + 1
+
 	print("Peer %s has selected upgrade with id %s" %[
 		for_peer_id,
 		peer_id_to_upgrade_options[for_peer_id][upgrade_index].id

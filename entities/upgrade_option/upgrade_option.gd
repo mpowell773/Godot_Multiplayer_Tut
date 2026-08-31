@@ -39,7 +39,7 @@ func kill() -> void:
 
 func _on_died() -> void:
 	selected.emit(upgrade_index, peer_id_filter)
-	
+
 	kill.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 	if peer_id_filter != MultiplayerPeer.TARGET_PEER_SERVER:
 		kill.rpc_id(peer_id_filter)

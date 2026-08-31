@@ -15,7 +15,7 @@ var ready_peer_ids: Array[int]:
 		_ready_peer_ids = value
 		emit_peer_ready_states_changed()
 
-## Added to MultiplayerSynchronizer so that player who join late have value 
+## Added to MultiplayerSynchronizer so that players who join late have value
 ## adjusted accordingly.
 var _is_lobby_closed := false
 var is_lobby_closed: bool:
@@ -35,7 +35,7 @@ func _ready() -> void:
 	# Singleplayer instance does not need readied logic.
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		all_peers_readied.emit.call_deferred()
-	
+
 	emit_peer_ready_states_changed.call_deferred()
 
 
@@ -65,14 +65,14 @@ func set_peer_ready(peer_id: int) -> void:
 func request_peer_ready() -> void:
 	if not is_multiplayer_authority() or is_lobby_closed:
 		return
-		
+
 	var sender_id := multiplayer.get_remote_sender_id()
 	if not ready_peer_ids.has(sender_id):
 		ready_peer_ids.append(sender_id)
 		emit_peer_ready_states_changed()
-	
+
 	set_peer_ready.rpc(sender_id)
-	
+
 	try_all_peers_ready()
 
 
@@ -87,7 +87,7 @@ func try_all_peers_ready() -> void:
 func check_all_peers_ready() -> bool:
 	var all_peers := multiplayer.get_peers()
 	all_peers.append(MultiplayerPeer.TARGET_PEER_SERVER)
-	
+
 	for peer_id in all_peers:
 		if not ready_peer_ids.has(peer_id):
 			return false
@@ -96,7 +96,7 @@ func check_all_peers_ready() -> bool:
 func on_peer_disconnected(peer_id: int) -> void:
 	if is_lobby_closed:
 		return
-		
+
 	if ready_peer_ids.has(peer_id):
 		ready_peer_ids.erase(peer_id)
 		emit_peer_ready_states_changed()
@@ -106,5 +106,5 @@ func on_peer_disconnected(peer_id: int) -> void:
 func _on_peer_connected(_peer_id: int) -> void:
 	if is_lobby_closed:
 		return
-	
+
 	emit_peer_ready_states_changed()
