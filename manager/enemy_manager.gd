@@ -14,6 +14,7 @@ const MAX_ROUNDS: int = 10
 @export var enemy_scene: PackedScene
 @export var enemy_spawn_root: Node
 @export var spawn_rect: ReferenceRect
+@export var upgrade_manager: UpgradeManager
 
 var _round_count: int = 0
 var round_count: int = 0:
@@ -22,7 +23,7 @@ var round_count: int = 0:
 	set(value):
 		_round_count = value
 		round_changed.emit(_round_count)
-		
+
 var spawned_enemies: int = 0
 
 @onready var spawn_interval_timer: Timer = $SpawnIntervalTimer
@@ -33,6 +34,7 @@ func _ready() -> void:
 	spawn_interval_timer.timeout.connect(_on_spawn_interval_timer_timeout)
 	round_timer.timeout.connect(_on_round_timer_timeout)
 	GameEvents.enemy_died.connect(_on_enemy_died)
+	upgrade_manager.upgrades_completed.connect(_on_upgrades_completed)
 
 
 func start() -> void:
@@ -45,7 +47,7 @@ func _synchronize_peer(data: Dictionary) -> void:
 	var wait_time: float = data["round_timer_time_left"]
 	if wait_time > 0:
 		round_timer.wait_time = data["round_timer_time_left"]
-	
+
 	if data["round_timer_is_running"]:
 		round_timer.start()
 	round_count = data["round_count"]
@@ -54,13 +56,13 @@ func _synchronize_peer(data: Dictionary) -> void:
 func synchronize(to_peer_id: int = -1) -> void:
 	if not is_multiplayer_authority():
 		return
-		
+
 	var data := {
 		"round_timer_is_running": !round_timer.is_stopped(),
 		"round_timer_time_left": round_timer.time_left,
 		"round_count": round_count
 	}
-	
+
 	if to_peer_id > -1 and to_peer_id != 1:
 		_synchronize_peer.rpc_id(to_peer_id, data)
 	else:
@@ -73,20 +75,20 @@ func get_round_time_remaining() -> float:
 
 func begin_round() -> void:
 	round_count += 1
-	round_timer.wait_time = 1 #ROUND_BASE_TIME + ((round_count - 1) * ROUND_GROWTH)
+	round_timer.wait_time = ROUND_BASE_TIME + ((round_count - 1) * ROUND_GROWTH)
 	round_timer.start()
-	
+
 	spawn_interval_timer.wait_time = BASE_ENEMY_SPAWN_TIME +\
 		 ((round_count - 1) * ENEMY_SPAWN_TIME_GROWTH)
 	spawn_interval_timer.start()
-	
+
 	synchronize()
 
 
 func check_round_completed() -> void:
 	if not round_timer.is_stopped():
 		return
-		
+
 	if spawned_enemies == 0:
 		if round_count == MAX_ROUNDS:
 			complete_game()
@@ -97,7 +99,7 @@ func check_round_completed() -> void:
 func complete_game() -> void:
 	await get_tree().create_timer(2.0).timeout
 	game_completed.emit()
-	
+
 
 
 func get_random_spawn_position() -> Vector2:
@@ -129,3 +131,7 @@ func _on_round_timer_timeout() -> void:
 func _on_enemy_died() -> void:
 	spawned_enemies -= 1
 	check_round_completed()
+
+
+func _on_upgrades_completed() -> void:
+	begin_round()

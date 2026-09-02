@@ -1,6 +1,8 @@
 class_name UpgradeManager
 extends Node
 
+signal upgrades_completed
+
 @export var enemy_manager: EnemyManager
 @export var spawn_position: Marker2D
 @export var spawn_root: Node2D
@@ -11,6 +13,7 @@ static var instance: UpgradeManager
 var upgrade_option_scene: PackedScene = preload("uid://egb6it4cxmj6")
 var peer_id_to_upgrade_options: Dictionary[int, Array] = {}
 var peer_id_to_upgrades_acquired: Dictionary[int, Dictionary] = {}
+var outstanding_peers_to_upgrade: Array[int] = []
 
 
 static func get_peer_upgrade_count(peer_id: int, upgrade_id: String) -> int:
@@ -34,6 +37,9 @@ func _ready() -> void:
 	instance = self
 	enemy_manager.round_completed.connect(_on_round_completed)
 
+	if is_multiplayer_authority():
+		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+
 
 ## Server-side only. To propagate upgrade options to clients, set_upgrade_options must
 ## be rpc'd.
@@ -43,6 +49,7 @@ func generate_upgrade_options() -> void:
 	connected_peer_ids.append(MultiplayerPeer.TARGET_PEER_SERVER)
 
 	for connected_peer_id in connected_peer_ids:
+		outstanding_peers_to_upgrade.append(connected_peer_id)
 		var available_upgrades_copy := Array(available_upgrades)
 		available_upgrades_copy.shuffle()
 
@@ -122,10 +129,20 @@ func handle_upgrade_selected(upgrade_index: int, for_peer_id: int) -> void:
 
 	upgrade_dictionary[chosen_upgrade.id] = upgrade_count + 1
 
+	outstanding_peers_to_upgrade.erase(for_peer_id)
+
 	print("Peer %s has selected upgrade with id %s" %[
 		for_peer_id,
 		peer_id_to_upgrade_options[for_peer_id][upgrade_index].id
 	])
+
+	check_upgrades_complete()
+
+
+func check_upgrades_complete() -> void:
+	if outstanding_peers_to_upgrade.size() > 0:
+		return
+	upgrades_completed.emit()
 
 
 func _on_round_completed() -> void:
@@ -134,3 +151,9 @@ func _on_round_completed() -> void:
 
 func _on_upgrade_option_selected(upgrade_index: int, for_peer_id: int) -> void:
 	handle_upgrade_selected(upgrade_index, for_peer_id)
+
+
+func _on_peer_disconnected(peer_id: int) -> void:
+	if outstanding_peers_to_upgrade.has(peer_id):
+		outstanding_peers_to_upgrade.erase(peer_id)
+	check_upgrades_complete()
