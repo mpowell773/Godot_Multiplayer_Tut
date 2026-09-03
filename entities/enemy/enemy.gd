@@ -44,7 +44,7 @@ func _ready() -> void:
 	default_collision_layer = collision_layer
 	hitbox_collision_shape.disabled = true
 	alert_sprite.scale = Vector2.ZERO
-	
+
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
 		state_machine.set_initial_state(state_spawn)
@@ -83,14 +83,14 @@ func enter_state_normal() -> void:
 func state_normal() -> void:
 	if is_multiplayer_authority():
 		velocity = global_position.direction_to(target_position) * 40
-		
+
 		if target_acquisition_timer.is_stopped():
 			acquire_target()
 			target_acquisition_timer.start()
-	
+
 		if attack_cooldown_timer.is_stopped() and global_position.distance_to(target_position) < 150:
 			state_machine.change_state(state_charge_attack)
-			
+
 	flip()
 
 
@@ -98,10 +98,10 @@ func enter_state_charge_attack() -> void:
 	if is_multiplayer_authority():
 		acquire_target()
 		charge_attack_timer.start()
-	
+
 	if alert_tween != null and alert_tween.is_valid():
 		alert_tween.kill()
-	
+
 	alert_tween = create_tween()
 	alert_tween.tween_property(alert_sprite, "scale", Vector2.ONE, 0.2)\
 		.set_ease(Tween.EASE_OUT)\
@@ -113,14 +113,14 @@ func state_charge_attack() -> void:
 		velocity = velocity.lerp(Vector2.ZERO, 1.0 - exp(-15.0 * get_process_delta_time()))
 		if charge_attack_timer.is_stopped():
 			state_machine.change_state(state_attack)
-	
+
 	flip()
 
 
 func leave_state_charge_attack() -> void:
 	if alert_tween != null and alert_tween.is_valid():
 		alert_tween.kill()
-	
+
 	alert_tween = create_tween()
 	alert_tween.tween_property(alert_sprite, "scale", Vector2.ZERO, 0.2)\
 		.set_ease(Tween.EASE_IN)\
@@ -159,14 +159,14 @@ func acquire_target() -> void:
 	var players := get_tree().get_nodes_in_group("player")
 	var nearest_player: Player = null
 	var nearest_squared_distance: float
-	
+
 	for player in players:
 		if nearest_player == null:
 			nearest_player = player
 			nearest_squared_distance = nearest_player.global_position\
 				.distance_squared_to(global_position)
 			continue
-		
+
 		var player_squared_distance: float = player.global_position\
 			.distance_squared_to(global_position)
 		if player_squared_distance < nearest_squared_distance:
@@ -187,11 +187,11 @@ func spawn_hit_particles() -> void:
 @rpc("authority", "call_local", "unreliable")
 func spawn_ground_particles() -> void:
 	var ground_particles: Node2D = ground_particles_scene.instantiate()
-	
+
 	var background_node: Node = Main.background_mask
 	if not is_instance_valid(background_node):
 		background_node = get_parent()
-		
+
 	background_node.add_child(ground_particles)
 	ground_particles.global_position = global_position
 

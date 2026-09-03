@@ -84,6 +84,7 @@ func create_upgrade_option_nodes(upgrade_resources: Array[UpgradeResource]) -> A
 	var result: Array[UpgradeOption] = []
 	var initial_x: int = -64
 	var x_difference: int = 64
+	var play_in_delay: float = 0.1
 
 	for i in range(upgrade_resources.size()):
 		var upgrade_option := upgrade_option_scene.instantiate() as UpgradeOption
@@ -94,6 +95,7 @@ func create_upgrade_option_nodes(upgrade_resources: Array[UpgradeResource]) -> A
 		# Spreads 3 upgrades evenly across the arena.
 		upgrade_option.global_position += Vector2.RIGHT * (initial_x + (x_difference * i))
 		spawn_root.add_child(upgrade_option)
+		upgrade_option.play_in(i * play_in_delay)
 
 		upgrade_option.selected.connect(_on_upgrade_option_selected)
 		result.append(upgrade_option)
