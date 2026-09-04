@@ -91,7 +91,9 @@ func state_normal() -> void:
 			acquire_target()
 			target_acquisition_timer.start()
 
-		if attack_cooldown_timer.is_stopped() and global_position.distance_to(target_position) < 150:
+		var can_attack := attack_cooldown_timer.is_stopped()\
+			or  global_position.distance_to(target_position) < 16
+		if can_attack and global_position.distance_to(target_position) < 150:
 			state_machine.change_state(state_charge_attack)
 
 	flip()
