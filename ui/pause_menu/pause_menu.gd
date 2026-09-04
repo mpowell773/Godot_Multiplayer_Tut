@@ -12,7 +12,13 @@ var current_paused_peer: int = -1
 func _ready() -> void:
 	resume_button.pressed.connect(_on_resume_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
-	
+	UIAudioManager.register_buttons(
+		[
+			resume_button,
+			quit_button
+		]
+	)
+
 	if is_multiplayer_authority():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
@@ -23,7 +29,7 @@ func _input(event: InputEvent) -> void:
 			request_unpause.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 		else:
 			request_pause.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
-			
+
 		get_viewport().set_input_as_handled()
 
 
@@ -31,7 +37,7 @@ func _input(event: InputEvent) -> void:
 func request_pause() -> void:
 	if current_paused_peer > -1:
 		return
-		
+
 	pause.rpc(multiplayer.get_remote_sender_id())
 
 

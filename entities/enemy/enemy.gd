@@ -28,6 +28,7 @@ var current_state: String:
 @onready var alert_sprite: Sprite2D = $AlertSprite
 @onready var hurtbox_component: HurtboxComponent = $HurtboxComponent
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var hit_stream_player: AudioStreamPlayer = $HitStreamPlayer
 
 
 func _notification(what: int) -> void:
@@ -187,7 +188,9 @@ func acquire_target() -> void:
 
 
 @rpc("authority", "call_local", "unreliable")
-func spawn_hit_particles() -> void:
+func spawn_hit_effects() -> void:
+	hit_stream_player.play()
+
 	var hit_particles: Node2D = impact_particles_scene.instantiate()
 	hit_particles.global_position = hurtbox_component.global_position
 	get_parent().add_child(hit_particles)
@@ -214,6 +217,6 @@ func _on_died() -> void:
 
 
 func _on_hit_by_hitbox() -> void:
-	spawn_hit_particles.rpc()
+	spawn_hit_effects.rpc()
 
 #endregion

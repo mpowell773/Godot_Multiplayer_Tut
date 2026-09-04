@@ -18,6 +18,9 @@ const BASE_BULLET_DAMAGE: int = 1
 @onready var display_name_label: Label = $DisplayNameLabel
 @onready var activation_area_collision_shape: CollisionShape2D = %ActivationAreaCollisionShape
 @onready var hurtbox_component: HurtboxComponent = $HurtboxComponent
+@onready var weapon_stream_player: AudioStreamPlayer = $WeaponStreamPlayer
+@onready var hit_stream_player: AudioStreamPlayer = $HitStreamPlayer
+
 
 var bullet_scene: PackedScene = preload("uid://cmsm71jq22qef")
 var muzzle_flash_scene: PackedScene = preload("uid://b604dyvkaj7mf")
@@ -109,6 +112,7 @@ func get_bullet_damage() -> int:
 func play_hit_effects() -> void:
 	if player_input_synchronizer_component.is_multiplayer_authority():
 		GameCamera.shake(1.0)
+		hit_stream_player.play()
 
 	var hit_particles: Node2D = ground_particles_scene.instantiate()
 
@@ -176,6 +180,8 @@ func play_fire_effects() -> void:
 
 	if player_input_synchronizer_component.is_multiplayer_authority():
 		GameCamera.shake(1.0)
+
+	weapon_stream_player.play()
 
 
 func kill():
