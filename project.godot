@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 
 GameEvents="*uid://yi6tnl283bo"
 Background="*uid://ceowa1qblaeot"
+Cursor="*uid://wdvt52rwly0t"
 
 [display]
 
