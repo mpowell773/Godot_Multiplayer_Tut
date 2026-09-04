@@ -77,6 +77,9 @@ properties/1/path = NodePath("HealthComponent:current_health")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_57qmd"]
+radius = 16.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_g4v7s"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yf5fn"]
@@ -102,6 +105,15 @@ max_health = 5
 [node name="FireRateTimer" type="Timer" parent="." unique_id=296666808]
 wait_time = 0.25
 one_shot = true
+
+[node name="ActivationArea" type="Area2D" parent="." unique_id=2140009483]
+position = Vector2(0, -9)
+collision_layer = 8
+collision_mask = 0
+
+[node name="ActivationAreaCollisionShape" type="CollisionShape2D" parent="ActivationArea" unique_id=631015164]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_57qmd")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2027919448]
 

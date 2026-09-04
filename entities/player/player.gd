@@ -15,6 +15,7 @@ const BASE_BULLET_DAMAGE: int = 1
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var barrel_position: Marker2D = %BarrelPosition
 @onready var display_name_label: Label = $DisplayNameLabel
+@onready var activation_area_collision_shape: CollisionShape2D = %ActivationAreaCollisionShape
 
 var bullet_scene: PackedScene = preload("uid://cmsm71jq22qef")
 var muzzle_flash_scene: PackedScene = preload("uid://b604dyvkaj7mf")
@@ -26,6 +27,9 @@ var display_name: String
 
 func _ready() -> void:
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
+	# The activation of the upgrade description is now synced to the current peer by using it's input synchronizer component.
+	# This handles the text popping up on other clients when someone is checking the description info.
+	activation_area_collision_shape.disabled = not player_input_synchronizer_component.is_multiplayer_authority()
 
 	var is_single_player := multiplayer.multiplayer_peer is OfflineMultiplayerPeer
 	var is_client_authority := player_input_synchronizer_component.is_multiplayer_authority()
