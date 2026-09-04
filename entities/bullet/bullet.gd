@@ -30,6 +30,7 @@ func start(_direction: Vector2) -> void:
 
 
 func register_collision() -> void:
+	hitbox_component.is_hit_handled = true
 	queue_free()
 
 
