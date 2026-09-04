@@ -47,7 +47,7 @@ func _ready() -> void:
 		health_component.died.connect(_on_died)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var movement_vector := player_input_synchronizer_component.movement_vector
 
 	# Client logic
@@ -64,7 +64,9 @@ func _process(_delta: float) -> void:
 			global_position = Vector2.RIGHT * 1000
 			return
 
-		velocity = movement_vector * get_movement_speed()
+		var target_velocity := movement_vector * get_movement_speed()
+		var smoothing_factor := -30.0
+		velocity = velocity.lerp(target_velocity, 1.0 - exp(smoothing_factor * delta))
 		move_and_slide()
 
 		if player_input_synchronizer_component.is_attack_pressed:
@@ -149,7 +151,7 @@ func play_fire_effects() -> void:
 
 func kill():
 	if not is_multiplayer_authority():
-		push_error("Cannont call kill on non-server client")
+		push_error("Cannot call kill on non-server client")
 		return
 
 	_kill.rpc()
