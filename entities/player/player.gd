@@ -12,6 +12,7 @@ const BASE_BULLET_DAMAGE: int = 1
 @onready var weapon_root: Node2D = $Visuals/WeaponRoot
 @onready var fire_rate_timer: Timer = $FireRateTimer
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var weapon_animation_player: AnimationPlayer = $WeaponAnimationPlayer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var barrel_position: Marker2D = %BarrelPosition
 @onready var display_name_label: Label = $DisplayNameLabel
@@ -47,8 +48,15 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	var movement_vector := player_input_synchronizer_component.movement_vector
+
 	# Client logic
 	update_aim_position()
+	# length_squared() is an optimization tactic.
+	if is_equal_approx(movement_vector.length_squared(), 0.0):
+		animation_player.play("RESET")
+	else:
+		animation_player.play("run")
 
 	# Server logic
 	if is_multiplayer_authority():
@@ -56,7 +64,7 @@ func _process(_delta: float) -> void:
 			global_position = Vector2.RIGHT * 1000
 			return
 
-		velocity = player_input_synchronizer_component.movement_vector * get_movement_speed()
+		velocity = movement_vector * get_movement_speed()
 		move_and_slide()
 
 		if player_input_synchronizer_component.is_attack_pressed:
@@ -126,9 +134,9 @@ func try_fire() -> void:
 
 @rpc("authority", "call_local", "unreliable")
 func play_fire_effects() -> void:
-	if animation_player.is_playing():
-		animation_player.stop()
-	animation_player.play("fire")
+	if weapon_animation_player.is_playing():
+		weapon_animation_player.stop()
+	weapon_animation_player.play("fire")
 
 	var muzzle_flash := muzzle_flash_scene.instantiate() as GPUParticles2D
 	muzzle_flash.global_position = barrel_position.global_position
