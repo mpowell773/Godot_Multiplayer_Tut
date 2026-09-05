@@ -34,6 +34,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Resume"
 
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=492166473]
+unique_name_in_owner = true
+layout_mode = 2
+text = "OPTIONS"
+
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=419359589]
 unique_name_in_owner = true
 layout_mode = 2

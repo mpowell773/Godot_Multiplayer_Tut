@@ -10,9 +10,11 @@ streams_count = 1
 stream_0/stream = ExtResource("1_h7f35")
 
 [node name="UIAudioManager" type="Node" unique_id=966898070]
+process_mode = 3
 script = ExtResource("1_knglf")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1536966867]
 stream = SubResource("AudioStreamRandomizer_36t2h")
 volume_db = -2.0
 max_polyphony = 2
+bus = &"sfx"

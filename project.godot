@@ -29,6 +29,7 @@ GameEvents="*uid://yi6tnl283bo"
 Background="*uid://ceowa1qblaeot"
 Cursor="*uid://wdvt52rwly0t"
 UIAudioManager="*uid://bxto4y5dvxxpf"
+MusicPlayer="*uid://dx4j23053fg5x"
 
 [display]
 
