@@ -58,6 +58,8 @@ func request_unpause() -> void:
 func pause(paused_peer: int) -> void:
 	get_tree().paused = true
 	visible = true
+	Cursor.change_cursor(false)
+
 	current_paused_peer = paused_peer
 	var is_controlling_player := current_paused_peer == multiplayer.get_unique_id()
 	resume_button.disabled = not is_controlling_player
@@ -68,6 +70,7 @@ func pause(paused_peer: int) -> void:
 func unpause() -> void:
 	get_tree().paused = false
 	visible = false
+	Cursor.change_cursor(true)
 	current_paused_peer = -1
 
 

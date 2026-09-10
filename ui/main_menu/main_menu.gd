@@ -29,6 +29,7 @@ func _ready() -> void:
 
 func _on_single_player_button_pressed() -> void:
 	get_tree().change_scene_to_packed(main_scene)
+	Cursor.change_cursor(true)
 
 
 func _on_multiplayer_button_pressed() -> void:

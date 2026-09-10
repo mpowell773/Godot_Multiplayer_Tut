@@ -95,6 +95,7 @@ func _on_host_pressed() -> void:
 
 	multiplayer.multiplayer_peer = server_peer
 	get_tree().change_scene_to_packed(main_scene)
+	Cursor.change_cursor(true)
 
 
 func _on_join_pressed() -> void:
@@ -107,7 +108,9 @@ func _on_join_pressed() -> void:
 
 	is_connecting = true
 	multiplayer.multiplayer_peer = client_peer
+	Cursor.change_cursor(true)
 	validate()
+
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_packed(main_menu_scene)

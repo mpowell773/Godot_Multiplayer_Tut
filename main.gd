@@ -25,7 +25,7 @@ var player_name_dictionary: Dictionary[int, String] = {}
 func _ready() -> void:
 	background_effects = _background_effects
 	background_mask = _background_mask
-	
+
 	multiplayer_spawner.spawn_function = func(data):
 		var player := player_scene.instantiate() as Player
 		player.set_display_name(data.display_name)
@@ -33,30 +33,30 @@ func _ready() -> void:
 		player.name = str(data.peer_id)
 		player.input_multiplayer_authority = data.peer_id
 		player.global_position = center_position.global_position
-		
+
 		if multiplayer.get_unique_id() == data.peer_id:
 			game_ui.connect_player(player)
-		
+
 		if is_multiplayer_authority():
 			if data.is_respawning:
 				player.is_respawn = true
-			
+
 			player.died.connect(_on_player_died.bind(data.peer_id))
-		
+
 		player_dictionary[data.peer_id] = player
 		return player
-	
+
 	peer_ready.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, MultiplayerConfig.display_name)
-	
+
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	pause_menu.quit.connect(_on_quit)
 	lobby_manager.all_peers_readied.connect(_on_all_peers_readied)
-	
+
 	if is_multiplayer_authority():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 		enemy_manager.game_completed.connect(_on_game_completed)
 		enemy_manager.round_completed.connect(_on_round_completed)
-		
+
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -67,7 +67,7 @@ func peer_ready(display_name: String) -> void:
 	multiplayer_spawner.spawn({
 		"peer_id": sender_id,
 		"display_name": player_name_dictionary[sender_id],
-		"is_respawning": false 
+		"is_respawning": false
 	})
 	enemy_manager.synchronize(sender_id)
 
@@ -93,12 +93,12 @@ func end_game() -> void:
 
 func check_game_over() -> void:
 	var is_game_over := true
-	
+
 	for peer_id in get_all_peers():
 		if not dead_peers.has(peer_id):
 			is_game_over = false
 			break
-	
+
 	if is_game_over:
 		end_game()
 
