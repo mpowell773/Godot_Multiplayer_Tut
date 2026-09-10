@@ -10,6 +10,7 @@ extends CanvasLayer
 
 
 func _ready() -> void:
+	default_volume_settings()
 	update_display()
 
 	sfx_down_button.pressed.connect(_on_down_pressed.bind("sfx"))
@@ -47,6 +48,11 @@ func change_bus_volume(bus_name: String, linear_change: float) -> void:
 	AudioServer.set_bus_volume_linear(index, clampf(current_volume_linear + linear_change, 0.0, 1.0))
 
 	update_display()
+
+
+func default_volume_settings() -> void:
+	change_bus_volume("sfx", -0.5)
+	change_bus_volume("music", -0.5)
 
 
 func _on_down_pressed(bus_name: String) -> void:
