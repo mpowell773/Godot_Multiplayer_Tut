@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://dfossglbvvxpk"]
+
+[ext_resource type="Script" uid="uid://bncfd1bwim4ai" path="res://source/ui/game_ui/game_ui.gd" id="1_5rq5h"]
+[ext_resource type="Texture2D" uid="uid://b7ekk0sqbnc8f" path="res://source/assets/ui/portrait.png" id="2_adpq5"]
+[ext_resource type="Texture2D" uid="uid://cyen1gapjl5i2" path="res://source/assets/ui/portrait_clip_mask.png" id="3_bkjh4"]
+[ext_resource type="Texture2D" uid="uid://dousda1allju0" path="res://source/entities/player/player-medium.png" id="4_bl2pf"]
+
+[node name="GameUI" type="CanvasLayer" unique_id=1040535599]
+script = ExtResource("1_5rq5h")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2059518817]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 48
+metadata/_edit_lock_ = true
+
+[node name="ReadyUpContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1976829716]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="ReadyLabel" type="Label" parent="MarginContainer/ReadyUpContainer" unique_id=1699069285]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.09019608, 0.7294118, 0.49019608, 1)
+theme_override_constants/outline_size = 4
+text = "READY"
+horizontal_alignment = 1
+
+[node name="NotReadyLabel" type="Label" parent="MarginContainer/ReadyUpContainer" unique_id=1483562792]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_constants/outline_size = 4
+text = "PRESS R TO READY UP"
+horizontal_alignment = 1
+
+[node name="ReadyCountLabel" type="Label" parent="MarginContainer/ReadyUpContainer" unique_id=48228577]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 4
+text = "1/4 READY"
+horizontal_alignment = 1
+
+[node name="RoundInfoContainer" type="VBoxContainer" parent="MarginContainer" unique_id=256255043]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="RoundLabel" type="Label" parent="MarginContainer/RoundInfoContainer" unique_id=965927485]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/outline_size = 4
+text = "Round 1"
+
+[node name="TimerLabel" type="Label" parent="MarginContainer/RoundInfoContainer" unique_id=255992633]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/outline_size = 4
+text = "30"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=925359364]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="PlayerPortait" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1940974517]
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+texture = ExtResource("2_adpq5")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/PlayerPortait" unique_id=352697279]
+clip_children = 1
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+mouse_filter = 2
+texture = ExtResource("3_bkjh4")
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/HBoxContainer/PlayerPortait/TextureRect" unique_id=110613900]
+position = Vector2(11, 9)
+texture = ExtResource("4_bl2pf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1343581307]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="DisplayNameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=960442296]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 4
+text = "Player Name"
+
+[node name="HealthProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1249623627]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 8)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+max_value = 1.0
+value = 0.5
+show_percentage = false
