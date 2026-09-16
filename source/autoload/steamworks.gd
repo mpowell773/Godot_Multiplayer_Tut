@@ -1,5 +1,11 @@
 extends Node
 
+## Distinguishes which signals to hook into if player has decided to use ENET
+## or SteamPeer multiplayer
+var steam_is_chosen := false
+var lobby_id: int = 0
+var invite_lobby_id: int = 0
+
 
 func _ready() -> void:
 	initialize_steam()
