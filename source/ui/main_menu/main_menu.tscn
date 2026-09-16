@@ -22,7 +22,8 @@ text = "Single Player"
 
 [node name="MultiplayerButton" type="Button" parent="VBoxContainer" unique_id=1555903782]
 layout_mode = 2
-text = "Multiplayer"
+text = "Multiplayer
+(Deprecated)"
 
 [node name="SteamButton" type="Button" parent="VBoxContainer" unique_id=458499213]
 layout_mode = 2

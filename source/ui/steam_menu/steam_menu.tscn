@@ -3,4 +3,128 @@
 [ext_resource type="Script" uid="uid://b58shoujndmdc" path="res://source/ui/steam_menu/steam_menu.gd" id="1_s4bo7"]
 
 [node name="SteamMenu" type="MarginContainer" unique_id=1537885192]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_s4bo7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1723216787]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=81968159]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer" unique_id=1569338914]
+layout_mode = 2
+text = "Display Name: "
+
+[node name="DisplayNameTextEdit" type="TextEdit" parent="VBoxContainer/VBoxContainer" unique_id=627906797]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Display Name"
+scroll_fit_content_height = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1739323654]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=899371098]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1151658110]
+layout_mode = 2
+text = "Host Port:"
+
+[node name="PortTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=879928961]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3000"
+placeholder_text = "Host Port"
+scroll_fit_content_height = true
+
+[node name="HostButton" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=57997383]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Host"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=704713622]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=990932386]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=72665432]
+layout_mode = 2
+text = "IP Address:"
+
+[node name="IPAddressTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=15585538]
+unique_name_in_owner = true
+layout_mode = 2
+text = "127.0.0.1"
+placeholder_text = "IP Address"
+scroll_fit_content_height = true
+
+[node name="JoinButton" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=120303517]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Join"
+
+[node name="BackButton" type="Button" parent="." unique_id=726341462]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Back"
+
+[node name="ErrorContainer" type="MarginContainer" parent="." unique_id=25649927]
+visible = false
+layout_mode = 2
+mouse_filter = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="ErrorContainer" unique_id=4960292]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="ErrorContainer/PanelContainer" unique_id=1840803309]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorContainer/PanelContainer/MarginContainer" unique_id=1482926026]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ErrorContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1089205236]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12941177, 0.5921569, 0.9411765, 1)
+text = "Error!"
+
+[node name="ClientErrorLabel" type="Label" parent="ErrorContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1618656345]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12941177, 0.5921569, 0.9411765, 1)
+text = "An error occured when connecting to the server."
+
+[node name="ServerErrorLabel" type="Label" parent="ErrorContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1810104206]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12941177, 0.5921569, 0.9411765, 1)
+text = "An error occured when creating the server."
+
+[node name="ErrorConfirmButton" type="Button" parent="ErrorContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=947188548]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Okay"
