@@ -41,6 +41,7 @@ func _on_multiplayer_button_pressed() -> void:
 
 func _on_steam_button_pressed() -> void:
 	Steamworks.steam_is_chosen = true
+	Steamworks.initialize_steam()
 	get_tree().change_scene_to_packed(steam_menu_scene)
 
 

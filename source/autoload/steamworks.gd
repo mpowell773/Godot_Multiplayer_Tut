@@ -5,10 +5,7 @@ extends Node
 var steam_is_chosen := false
 var lobby_id: int = 0
 var invite_lobby_id: int = 0
-
-
-func _ready() -> void:
-	initialize_steam()
+var steam_username := ""
 
 
 func _process(_delta: float) -> void:
@@ -22,3 +19,5 @@ func initialize_steam() -> void:
 	if initialize_response['status'] > Steam.STEAM_API_INIT_RESULT_OK:
 		printerr("Failed to initialize Steam, shutting down: %s" % initialize_response)
 		get_tree().quit()
+
+	steam_username = Steam.getPersonaName()
