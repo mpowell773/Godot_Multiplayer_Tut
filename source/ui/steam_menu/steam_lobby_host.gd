@@ -6,11 +6,14 @@ extends Panel
 @onready var create_button: Button = %CreateButton
 @onready var host_back_button: Button = %HostBackButton
 
+@onready var steam_menu_scene: PackedScene = preload("uid://cu8s3te846lb")
+
 
 func _ready() -> void:
 	create_button.pressed.connect(_on_create_button_pressed)
+	host_back_button.pressed.connect(_on_host_back_button_pressed)
 
-	Steam.lobby_joined.connect(_on_lobby_joined)
+
 	Steam.lobby_created.connect(_on_lobby_created)
 
 
@@ -19,8 +22,8 @@ func _on_create_button_pressed() -> void:
 	Steam.createLobby(lobby_type, int(max_players_spin_box.value))
 
 
-func _on_lobby_joined() -> void:
-	pass
+func _on_host_back_button_pressed() -> void:
+	get_tree().change_scene_to_packed(steam_menu_scene)
 
 
 func _on_lobby_created(connect_status: Steam.Result, lobby_id: int) -> void:

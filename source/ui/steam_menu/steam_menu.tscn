@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cu8s3te846lb"]
 
 [ext_resource type="Script" uid="uid://b58shoujndmdc" path="res://source/ui/steam_menu/steam_menu.gd" id="1_s4bo7"]
-[ext_resource type="PackedScene" uid="uid://7jk1ysfnpkud" path="res://source/ui/steam_menu/steam_lobby_host.tscn" id="2_a0daq"]
 
 [node name="SteamMenu" type="MarginContainer" unique_id=1537885192]
 anchors_preset = 15
@@ -91,6 +90,3 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "Okay"
-
-[node name="HostPopUp" parent="." unique_id=57884141 instance=ExtResource("2_a0daq")]
-layout_mode = 2

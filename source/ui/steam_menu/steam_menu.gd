@@ -3,9 +3,9 @@ extends MarginContainer
 @onready var host_button: Button = %HostButton
 @onready var join_button: Button = %JoinButton
 @onready var back_button: Button = %BackButton
-@onready var host_pop_up: Panel = $HostPopUp
 
 @onready var main_menu_scene: PackedScene = load("uid://cptovqnmaae8k")
+@onready var steam_lobby_host_scene: PackedScene = load("uid://7jk1ysfnpkud")
 
 
 func _ready() -> void:
@@ -13,9 +13,15 @@ func _ready() -> void:
 	join_button.pressed.connect(_on_join_button_pressed)
 	back_button.pressed.connect(_on_back_button_pressed)
 
+	Steam.lobby_joined.connect(_on_lobby_joined)
+
+
+func _on_lobby_joined() -> void:
+	pass
+
 
 func _on_host_button_pressed() -> void:
-	host_pop_up.visible = true
+	get_tree().change_scene_to_packed(steam_lobby_host_scene)
 
 
 func _on_join_button_pressed() -> void:
