@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://cu8s3te846lb"]
 
 [ext_resource type="Script" uid="uid://b58shoujndmdc" path="res://source/ui/steam_menu/steam_menu.gd" id="1_s4bo7"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
-font_size = 24
+[ext_resource type="PackedScene" uid="uid://7jk1ysfnpkud" path="res://source/ui/steam_menu/steam_lobby_host.tscn" id="2_a0daq"]
 
 [node name="SteamMenu" type="MarginContainer" unique_id=1537885192]
 anchors_preset = 15
@@ -94,96 +92,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "Okay"
 
-[node name="HostPopUp" type="Panel" parent="." unique_id=1378038055]
+[node name="HostPopUp" parent="." unique_id=57884141 instance=ExtResource("2_a0daq")]
 layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HostPopUp" unique_id=704532888]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HostPopUp/MarginContainer" unique_id=550065497]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="HostPopUp/MarginContainer/VBoxContainer" unique_id=1230892953]
-layout_mode = 2
-text = "Host Lobby"
-label_settings = SubResource("LabelSettings_g4v7s")
-horizontal_alignment = 1
-
-[node name="VBoxSettings" type="VBoxContainer" parent="HostPopUp/MarginContainer/VBoxContainer" unique_id=1891989358]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 16
-
-[node name="MaxPlayersHbox" type="HBoxContainer" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings" unique_id=991567335]
-layout_mode = 2
-
-[node name="MaxPlayersLabel" type="Label" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings/MaxPlayersHbox" unique_id=793061427]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Max Players"
-
-[node name="MaxPlayersSpinBox" type="SpinBox" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings/MaxPlayersHbox" unique_id=1781191738]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-
-[node name="VisibilityHbox" type="HBoxContainer" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings" unique_id=160093978]
-layout_mode = 2
-
-[node name="VisibilityLabel" type="Label" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings/VisibilityHbox" unique_id=1945645594]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Lobby Visibility"
-
-[node name="VisibilityOptionButton" type="OptionButton" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings/VisibilityHbox" unique_id=1233710822]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-selected = 0
-item_count = 1
-popup/item_0/text = "Public"
-popup/item_0/id = 0
-
-[node name="DataListHbox" type="HBoxContainer" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings" unique_id=125150098]
-layout_mode = 2
-
-[node name="DataListLabel" type="Label" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings/DataListHbox" unique_id=122978652]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Lobby Data"
-
-[node name="DataListLineEdit" type="LineEdit" parent="HostPopUp/MarginContainer/VBoxContainer/VBoxSettings/DataListHbox" unique_id=1291445505]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 10
-placeholder_text = "Enter lobby data as key1:value1, key2:value2, etc."
-expand_to_text_length = true
-
-[node name="ButtonsHbox" type="HBoxContainer" parent="HostPopUp/MarginContainer/VBoxContainer" unique_id=832222023]
-layout_mode = 2
-
-[node name="CreateButton" type="Button" parent="HostPopUp/MarginContainer/VBoxContainer/ButtonsHbox" unique_id=1613446712]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Create"
-
-[node name="HostBackButton" type="Button" parent="HostPopUp/MarginContainer/VBoxContainer/ButtonsHbox" unique_id=2061797158]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Back
-"

@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://7jk1ysfnpkud"]
+
+[ext_resource type="Script" uid="uid://ccvpxahevf2ia" path="res://source/ui/steam_menu/steam_lobby_host.gd" id="1_br5td"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
+font_size = 24
+
+[node name="SteamLobbyHost" type="Panel" unique_id=57884141]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_br5td")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=29993384]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=563494203]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1798246469]
+layout_mode = 2
+text = "Host Lobby"
+label_settings = SubResource("LabelSettings_g4v7s")
+horizontal_alignment = 1
+
+[node name="VBoxSettings" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1257459849]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="MaxPlayersHbox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxSettings" unique_id=108276815]
+layout_mode = 2
+
+[node name="MaxPlayersLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxSettings/MaxPlayersHbox" unique_id=545819664]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Max Players"
+
+[node name="MaxPlayersSpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/VBoxSettings/MaxPlayersHbox" unique_id=873358304]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="VisibilityHbox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxSettings" unique_id=445384209]
+layout_mode = 2
+
+[node name="VisibilityLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxSettings/VisibilityHbox" unique_id=1405411922]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Lobby Visibility"
+
+[node name="VisibilityOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxSettings/VisibilityHbox" unique_id=908694502]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+selected = 0
+item_count = 1
+popup/item_0/text = "Public"
+popup/item_0/id = 0
+
+[node name="DataListHbox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxSettings" unique_id=934744399]
+layout_mode = 2
+
+[node name="DataListLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxSettings/DataListHbox" unique_id=78027395]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Lobby Data"
+
+[node name="DataListLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxSettings/DataListHbox" unique_id=387135547]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+placeholder_text = "Enter lobby data as key1:value1, key2:value2, etc."
+expand_to_text_length = true
+
+[node name="ButtonsHbox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1726349731]
+layout_mode = 2
+
+[node name="CreateButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsHbox" unique_id=1986436298]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Create"
+
+[node name="HostBackButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsHbox" unique_id=386678893]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Back
+"
