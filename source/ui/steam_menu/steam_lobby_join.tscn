@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://clk8y8t2olfqb"]
 
+[ext_resource type="Script" uid="uid://bnp1gp2mphpor" path="res://source/ui/steam_menu/steam_lobby_join.gd" id="1_cy2xw"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 font_size = 24
 outline_size = 8
@@ -17,16 +19,22 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="SteamLobbyJoin" type="Node" unique_id=854601563]
+[sub_resource type="LabelSettings" id="LabelSettings_cy2xw"]
+font_size = 24
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
-[node name="BaseLobbyPanel" type="Panel" parent="." unique_id=952723735]
+[node name="SteamLobbyJoin" type="Node" unique_id=854601563]
+script = ExtResource("1_cy2xw")
+
+[node name="BaseLobbyJoin" type="Panel" parent="." unique_id=952723735]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="BaseLobbyPanel" unique_id=1524401364]
+[node name="MarginContainer" type="MarginContainer" parent="BaseLobbyJoin" unique_id=1524401364]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,39 +46,177 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BaseLobbyPanel/MarginContainer" unique_id=167386726]
+[node name="VBoxContainer" type="VBoxContainer" parent="BaseLobbyJoin/MarginContainer" unique_id=167386726]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="BaseLobbyPanel/MarginContainer/VBoxContainer" unique_id=762550350]
+[node name="Label" type="Label" parent="BaseLobbyJoin/MarginContainer/VBoxContainer" unique_id=762550350]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Lobby List"
 label_settings = SubResource("LabelSettings_g4v7s")
 horizontal_alignment = 1
 
-[node name="Panel" type="Panel" parent="BaseLobbyPanel/MarginContainer/VBoxContainer" unique_id=1409226375]
+[node name="Panel" type="Panel" parent="BaseLobbyJoin/MarginContainer/VBoxContainer" unique_id=1409226375]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_g4v7s")
 
-[node name="DisplayedLobbies" type="VBoxContainer" parent="BaseLobbyPanel/MarginContainer/VBoxContainer/Panel" unique_id=1947159339]
+[node name="DisplayedLobbies" type="VBoxContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/Panel" unique_id=1947159339]
+unique_name_in_owner = true
 layout_mode = 0
 offset_top = 4.0
 offset_right = 608.0
 offset_bottom = 4.0
 
-[node name="ButtonsContainer" type="HBoxContainer" parent="BaseLobbyPanel/MarginContainer/VBoxContainer" unique_id=1225746669]
+[node name="ButtonsContainer" type="HBoxContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer" unique_id=1225746669]
 layout_mode = 2
 size_flags_vertical = 8
+theme_override_constants/separation = 16
 
-[node name="FilterButton" type="Button" parent="BaseLobbyPanel/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1735175504]
+[node name="FilterButton" type="Button" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1735175504]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 text = "Filters"
 
-[node name="RefreshButton" type="Button" parent="BaseLobbyPanel/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1763094625]
+[node name="RefreshButton" type="Button" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1763094625]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 text = "Refresh"
 
-[node name="CloseButton" type="Button" parent="BaseLobbyPanel/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1270542575]
+[node name="CloseButton" type="Button" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1270542575]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
+size_flags_horizontal = 10
+text = "Close"
+
+[node name="LobbyFilters" type="Control" parent="." unique_id=490387305]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="LobbyFilters" unique_id=1039620583]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="LobbyFilters/Panel" unique_id=1083674851]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyFilters/Panel/MarginContainer" unique_id=1615637780]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer" unique_id=806305809]
+layout_mode = 2
+text = "Lobby Filters"
+label_settings = SubResource("LabelSettings_cy2xw")
+horizontal_alignment = 1
+
+[node name="VBoxFilters" type="VBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer" unique_id=800949449]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LobbyDistance" type="HBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters" unique_id=1273694322]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/LobbyDistance" unique_id=1104451100]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "Search Distance"
+
+[node name="DistanceOption" type="OptionButton" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/LobbyDistance" unique_id=1799853918]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+selected = 1
+item_count = 4
+popup/item_0/text = "Close"
+popup/item_0/id = 0
+popup/item_1/text = "Default"
+popup/item_1/id = 1
+popup/item_2/text = "Far"
+popup/item_2/id = 2
+popup/item_3/text = "Worldwide"
+popup/item_3/id = 3
+
+[node name="HasOpenSlots" type="HBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters" unique_id=1611228943]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/HasOpenSlots" unique_id=1864950061]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "Open Player Slots"
+
+[node name="OpenSlotsSpinBox" type="SpinBox" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/HasOpenSlots" unique_id=1626552435]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="MaxLobbiesReturned" type="HBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters" unique_id=1388097715]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/MaxLobbiesReturned" unique_id=1364510474]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "Max Lobbies Returned"
+
+[node name="MaxLobbiesSpinBox" type="SpinBox" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/MaxLobbiesReturned" unique_id=775859598]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+max_value = 50.0
+value = 50.0
+
+[node name="LobbyTerms" type="HBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters" unique_id=1636055394]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/LobbyTerms" unique_id=1136116165]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "Search Terms"
+
+[node name="LineEdit" type="LineEdit" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/LobbyTerms" unique_id=2009627843]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "brothers:hangout"
+placeholder_text = "Enter lobby data as key:1value1, key2:value2, etc."
+expand_to_text_length = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer" unique_id=1536468473]
+layout_mode = 2
+
+[node name="CloseFiltersButton" type="Button" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1310468680]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 10
 text = "Close"
