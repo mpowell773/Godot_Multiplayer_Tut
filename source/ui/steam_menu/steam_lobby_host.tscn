@@ -4,6 +4,8 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 font_size = 24
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [node name="SteamLobbyHost" type="Panel" unique_id=57884141]
 anchors_preset = 15
@@ -30,6 +32,7 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1798246469]
 layout_mode = 2
+theme_override_constants/outline_size = 8
 text = "Host Lobby"
 label_settings = SubResource("LabelSettings_g4v7s")
 horizontal_alignment = 1
@@ -45,6 +48,7 @@ layout_mode = 2
 [node name="MaxPlayersLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxSettings/MaxPlayersHbox" unique_id=545819664]
 layout_mode = 2
 size_flags_horizontal = 0
+theme_override_constants/outline_size = 8
 text = "Max Players"
 
 [node name="MaxPlayersSpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/VBoxSettings/MaxPlayersHbox" unique_id=873358304]
@@ -52,6 +56,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+max_value = 250.0
 
 [node name="VisibilityHbox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxSettings" unique_id=445384209]
 layout_mode = 2
@@ -59,6 +64,7 @@ layout_mode = 2
 [node name="VisibilityLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxSettings/VisibilityHbox" unique_id=1405411922]
 layout_mode = 2
 size_flags_horizontal = 0
+theme_override_constants/outline_size = 8
 text = "Lobby Visibility"
 
 [node name="VisibilityOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxSettings/VisibilityHbox" unique_id=908694502]
@@ -67,9 +73,15 @@ custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 selected = 0
-item_count = 1
-popup/item_0/text = "Public"
+item_count = 4
+popup/item_0/text = "Private"
 popup/item_0/id = 0
+popup/item_1/text = "Friends Only"
+popup/item_1/id = 1
+popup/item_2/text = "Public"
+popup/item_2/id = 2
+popup/item_3/text = "Invisibile"
+popup/item_3/id = 3
 
 [node name="DataListHbox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxSettings" unique_id=934744399]
 layout_mode = 2
@@ -77,12 +89,14 @@ layout_mode = 2
 [node name="DataListLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxSettings/DataListHbox" unique_id=78027395]
 layout_mode = 2
 size_flags_horizontal = 0
+theme_override_constants/outline_size = 8
 text = "Lobby Data"
 
 [node name="DataListLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxSettings/DataListHbox" unique_id=387135547]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
+text = "brothers:hangout"
 placeholder_text = "Enter lobby data as key1:value1, key2:value2, etc."
 expand_to_text_length = true
 

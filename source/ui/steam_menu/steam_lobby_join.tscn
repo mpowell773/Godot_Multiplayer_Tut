@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://clk8y8t2olfqb"]
+
+[node name="SteamLobbyJoin" type="Node" unique_id=854601563]
+
+[node name="Panel" type="Panel" parent="." unique_id=952723735]
+offset_right = 40.0
+offset_bottom = 40.0
