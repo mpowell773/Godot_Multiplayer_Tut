@@ -81,5 +81,6 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 		displayed_lobbies.call_deferred("add_child", lobby_object)
 
 
-func _on_joining_lobby() -> void:
-	pass
+func _on_joining_lobby(lobby_id: int) -> void:
+	print("Attempting to join lobby %s from the lobby list" % lobby_id)
+	Steam.joinLobby(lobby_id)
