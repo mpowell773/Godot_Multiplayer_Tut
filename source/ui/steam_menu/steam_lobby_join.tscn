@@ -85,12 +85,12 @@ custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 text = "Refresh"
 
-[node name="CloseButton" type="Button" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1270542575]
+[node name="BackButton" type="Button" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1270542575]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 size_flags_horizontal = 10
-text = "Close"
+text = "Back"
 
 [node name="LobbyFilters" type="Control" parent="." unique_id=490387305]
 unique_name_in_owner = true
@@ -202,7 +202,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 text = "Search Terms"
 
-[node name="LineEdit" type="LineEdit" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/LobbyTerms" unique_id=2009627843]
+[node name="SearchTermsEdit" type="LineEdit" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters/LobbyTerms" unique_id=2009627843]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 0)
 layout_mode = 2

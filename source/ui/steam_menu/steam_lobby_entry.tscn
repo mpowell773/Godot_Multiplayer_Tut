@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://gcn2mfeiyhq"]
+
+[node name="SteamLobbyEntry" type="Node" unique_id=1307129605]
+
+[node name="Label" type="Label" parent="." unique_id=2134498142]
+offset_right = 40.0
+offset_bottom = 16.0
+
+[node name="Button" type="Button" parent="." unique_id=1627251773]
+offset_right = 8.0
+offset_bottom = 9.0

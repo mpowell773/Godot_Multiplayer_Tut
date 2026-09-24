@@ -6,6 +6,7 @@ extends MarginContainer
 
 @onready var main_menu_scene: PackedScene = load("uid://cptovqnmaae8k")
 @onready var steam_lobby_host_scene: PackedScene = load("uid://7jk1ysfnpkud")
+@onready var steam_lobby_join_scene: PackedScene = load("uid://clk8y8t2olfqb")
 
 
 func _ready() -> void:
@@ -25,7 +26,7 @@ func _on_host_button_pressed() -> void:
 
 
 func _on_join_button_pressed() -> void:
-	pass
+	get_tree().change_scene_to_packed(steam_lobby_join_scene)
 
 
 func _on_back_button_pressed() -> void:
