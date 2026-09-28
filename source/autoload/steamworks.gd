@@ -8,6 +8,10 @@ var invite_lobby_id: int = 0
 var steam_username := ""
 
 
+func _ready() -> void:
+	Steam.join_requested.connect(_on_lobby_join_requested)
+
+
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
 
@@ -21,3 +25,10 @@ func initialize_steam() -> void:
 		get_tree().quit()
 
 	steam_username = Steam.getPersonaName()
+
+
+func _on_lobby_join_requested(_lobby_id: int, friend_id: int) -> void:
+	var friend_joining: String = Steam.getFriendPersonaName(friend_id)
+	print("Joining lobby with %s" % friend_joining)
+
+	invite_lobby_id = _lobby_id

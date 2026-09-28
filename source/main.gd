@@ -58,7 +58,6 @@ func _ready() -> void:
 		enemy_manager.round_completed.connect(_on_round_completed)
 
 
-
 @rpc("any_peer", "call_local", "reliable")
 func peer_ready(display_name: String) -> void:
 	# Using "call_local" helps limit branching logic for client and server calls.

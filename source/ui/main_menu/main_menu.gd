@@ -14,6 +14,7 @@ var steam_menu_scene: PackedScene = preload("uid://cu8s3te846lb")
 
 
 func _ready() -> void:
+	check_command_line()
 	single_player_button.pressed.connect(_on_single_player_button_pressed)
 	multiplayer_button.pressed.connect(_on_multiplayer_button_pressed)
 	quit_button.pressed.connect(_on_quit_button_pressed)
@@ -28,6 +29,24 @@ func _ready() -> void:
 			quit_button
 		]
 	)
+
+
+func check_command_line() -> void:
+	var command_line_args: Array = OS.get_cmdline_args()
+	if command_line_args.size() == 0:
+		return
+
+	print("Command line arguments: %s" % [command_line_args])
+
+	if command_line_args[0] != "+connect_lobby":
+		return
+
+	var lobby_id := int(command_line_args[1])
+	if lobby_id > 0:
+		# Possible breaking zone without proper testing. Not sure if initializing
+		# steam here from command line will work.
+		Steamworks.initialize_steam()
+		Steamworks.invite_lobby_id = lobby_id
 
 
 func _on_single_player_button_pressed() -> void:
