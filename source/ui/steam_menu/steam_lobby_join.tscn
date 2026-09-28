@@ -61,12 +61,26 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_g4v7s")
 
-[node name="DisplayedLobbies" type="VBoxContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/Panel" unique_id=1947159339]
+[node name="MarginContainer" type="MarginContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/Panel" unique_id=1278834838]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/Panel/MarginContainer" unique_id=2100948896]
+layout_mode = 2
+
+[node name="DisplayedLobbies" type="VBoxContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer/Panel/MarginContainer/ScrollContainer" unique_id=1640790895]
 unique_name_in_owner = true
-layout_mode = 0
-offset_top = 4.0
-offset_right = 608.0
-offset_bottom = 4.0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="ButtonsContainer" type="HBoxContainer" parent="BaseLobbyJoin/MarginContainer/VBoxContainer" unique_id=1225746669]
 layout_mode = 2
@@ -94,6 +108,7 @@ text = "Back"
 
 [node name="LobbyFilters" type="Control" parent="." unique_id=490387305]
 unique_name_in_owner = true
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

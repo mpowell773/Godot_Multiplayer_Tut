@@ -1,5 +1,7 @@
 extends MarginContainer
 
+var main_scene: PackedScene = preload("uid://cxgeu56nx8jw0")
+
 @onready var host_button: Button = %HostButton
 @onready var join_button: Button = %JoinButton
 @onready var back_button: Button = %BackButton
@@ -18,7 +20,7 @@ func _ready() -> void:
 
 
 func _on_lobby_joined() -> void:
-	pass
+	get_tree().change_scene_to_packed(main_scene)
 
 
 func _on_host_button_pressed() -> void:

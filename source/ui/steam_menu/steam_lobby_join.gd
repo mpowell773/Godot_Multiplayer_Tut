@@ -76,7 +76,7 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 	for this_lobby in these_lobbies:
 		var lobby_object := LOBBY_ENTRY.instantiate()
 		lobby_object.name = "Lobby%s" % this_lobby
-		lobby_object.set_lobby_id(this_lobby)
+		lobby_object.lobby_id = this_lobby
 		lobby_object.joining_lobby.connect(_on_joining_lobby)
 		displayed_lobbies.call_deferred("add_child", lobby_object)
 
