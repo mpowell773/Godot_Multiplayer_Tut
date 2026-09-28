@@ -17,7 +17,7 @@ var main_scene: PackedScene = preload("uid://cxgeu56nx8jw0")
 
 @onready var steam_menu_scene: PackedScene = load("uid://cu8s3te846lb")
 
-#
+
 func _ready() -> void:
 	filter_button.pressed.connect(_on_filter_button_pressed)
 	refresh_button.pressed.connect(_on_refresh_button_pressed)
@@ -83,4 +83,5 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 
 func _on_joining_lobby(lobby_id: int) -> void:
 	print("Attempting to join lobby %s from the lobby list" % lobby_id)
-	Steam.joinLobby(lobby_id)
+	Steamworks.invite_lobby_id = lobby_id
+	get_tree().change_scene_to_packed(steam_menu_scene)

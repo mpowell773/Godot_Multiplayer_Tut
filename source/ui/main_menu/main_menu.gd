@@ -44,9 +44,10 @@ func check_command_line() -> void:
 	var lobby_id := int(command_line_args[1])
 	if lobby_id > 0:
 		# Possible breaking zone without proper testing. Not sure if initializing
-		# steam here from command line will work.
+		# Steam here from command line will work.
 		Steamworks.initialize_steam()
 		Steamworks.invite_lobby_id = lobby_id
+		get_tree().change_scene_to_packed(steam_menu_scene)
 
 
 func _on_single_player_button_pressed() -> void:

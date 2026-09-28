@@ -30,15 +30,26 @@ func _on_lobby_created(connect_status: Steam.Result, lobby_id: int) -> void:
 		print("Succesfully created lobby %s" % lobby_id)
 		Steamworks.lobby_id = lobby_id
 
-	var lobby_name := "%s's lobby" % Steamworks.steam_username
-	var has_set_lobby_name := Steam.setLobbyData(Steamworks.lobby_id, "lobby_name", lobby_name)
-	if not has_set_lobby_name:
-		printerr("Failed to set lobby name")
+		var lobby_name := "%s's lobby" % Steamworks.steam_username
+		var has_set_lobby_name := Steam.setLobbyData(Steamworks.lobby_id, "lobby_name", lobby_name)
+		if not has_set_lobby_name:
+			printerr("Failed to set lobby name")
 
-	var data_sets: PackedStringArray = data_list_line_edit.text.split(",", false)
-	for this_data in data_sets:
-		var data_key_value: PackedStringArray = this_data.split(":", false, 1)
-		if data_key_value.size() == 2:
-			var has_set_data := Steam.setLobbyData(Steamworks.lobby_id, data_key_value[0], data_key_value[1])
-			if not has_set_data:
-				printerr("Failed to set lobby %s data [%s : %s]" % [Steamworks.lobby_id, data_key_value[0], data_key_value[1]])
+		var data_sets: PackedStringArray = data_list_line_edit.text.split(",", false)
+		for this_data in data_sets:
+			var data_key_value: PackedStringArray = this_data.split(":", false, 1)
+			if data_key_value.size() == 2:
+				var has_set_data := Steam.setLobbyData(\
+					Steamworks.lobby_id, data_key_value[0], data_key_value[1]
+				)
+				if not has_set_data:
+					printerr("Failed to set lobby %s data [%s : %s]"\
+						% [Steamworks.lobby_id, data_key_value[0], data_key_value[1]])
+
+		# This is hacky for the time being, will look into Steam's server bool logic
+		# To have better conditional flow in steam_menu.gd
+		Steamworks.invite_lobby_id = Steamworks.lobby_id
+		get_tree().change_scene_to_packed(steam_menu_scene)
+
+	else:
+		printerr("failed to create a lobby: %s" % connect_status)

@@ -7,6 +7,8 @@ var lobby_id: int = 0
 var invite_lobby_id: int = 0
 var steam_username := ""
 
+@onready var steam_menu_scene: PackedScene = load("uid://cu8s3te846lb")
+
 
 func _ready() -> void:
 	Steam.join_requested.connect(_on_lobby_join_requested)
@@ -32,3 +34,4 @@ func _on_lobby_join_requested(_lobby_id: int, friend_id: int) -> void:
 	print("Joining lobby with %s" % friend_joining)
 
 	invite_lobby_id = _lobby_id
+	get_tree().change_scene_to_packed(steam_menu_scene)
