@@ -12,6 +12,7 @@ var main_scene: PackedScene = preload("uid://cxgeu56nx8jw0")
 
 
 func _ready() -> void:
+	MultiplayerConfig.display_name = Steam.getPersonaName()
 	host_button.pressed.connect(_on_host_button_pressed)
 	join_button.pressed.connect(_on_join_button_pressed)
 	back_button.pressed.connect(_on_back_button_pressed)
@@ -35,7 +36,13 @@ func _on_lobby_joined(
 		print("Lobby %s joined successfully" % lobby_id)
 		Steamworks.lobby_id = lobby_id
 
-		#TODO: Implement multiplayer peer networking here
+		var server_steam_id := Steam.getLobbyOwner(lobby_id)
+		if server_steam_id != Steam.getSteamID():
+			var peer: MultiplayerPeer = SteamMultiplayerPeer.new()
+			peer.create_client(server_steam_id, 0)
+			peer.server_relay = true
+			multiplayer.set_multiplayer_peer(peer)
+
 		get_tree().change_scene_to_packed(main_scene)
 
 	else:

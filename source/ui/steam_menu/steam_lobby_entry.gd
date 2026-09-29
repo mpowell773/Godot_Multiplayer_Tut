@@ -1,7 +1,6 @@
 extends Node
 
-signal joining_lobby
-
+signal joining_lobby(lobby_id: int)
 
 var lobby_id: int = 0:
 	set(value):
@@ -24,4 +23,4 @@ func _ready() -> void:
 
 
 func _on_join_button_pressed() -> void:
-	joining_lobby.emit()
+	joining_lobby.emit(lobby_id)

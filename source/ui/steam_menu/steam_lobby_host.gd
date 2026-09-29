@@ -7,6 +7,7 @@ extends Panel
 @onready var host_back_button: Button = %HostBackButton
 
 @onready var steam_menu_scene: PackedScene = preload("uid://cu8s3te846lb")
+@onready var main_scene: PackedScene = preload("uid://cxgeu56nx8jw0")
 
 
 func _ready() -> void:
@@ -46,10 +47,12 @@ func _on_lobby_created(connect_status: Steam.Result, lobby_id: int) -> void:
 					printerr("Failed to set lobby %s data [%s : %s]"\
 						% [Steamworks.lobby_id, data_key_value[0], data_key_value[1]])
 
-		# This is hacky for the time being, will look into Steam's server bool logic
-		# To have better conditional flow in steam_menu.gd
-		Steamworks.invite_lobby_id = Steamworks.lobby_id
-		get_tree().change_scene_to_packed(steam_menu_scene)
+		var peer: MultiplayerPeer = SteamMultiplayerPeer.new()
+		peer.create_host(0)
+		peer.server_relay = true
+		multiplayer.set_multiplayer_peer(peer)
+
+		get_tree().change_scene_to_packed(main_scene)
 
 	else:
 		printerr("failed to create a lobby: %s" % connect_status)
