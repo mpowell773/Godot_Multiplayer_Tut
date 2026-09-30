@@ -12,12 +12,13 @@ var main_scene: PackedScene = preload("uid://cxgeu56nx8jw0")
 
 
 func _ready() -> void:
-	MultiplayerConfig.display_name = Steam.getPersonaName()
+	MultiplayerConfig.display_name = Steamworks.steam_username
 	host_button.pressed.connect(_on_host_button_pressed)
 	join_button.pressed.connect(_on_join_button_pressed)
 	back_button.pressed.connect(_on_back_button_pressed)
 
 	Steam.lobby_joined.connect(_on_lobby_joined)
+	multiplayer.connected_to_server.connect(_on_connected_to_server)
 
 	if Steamworks.invite_lobby_id > 0:
 		Steam.joinLobby(Steamworks.invite_lobby_id)
@@ -41,9 +42,9 @@ func _on_lobby_joined(
 			var peer: MultiplayerPeer = SteamMultiplayerPeer.new()
 			peer.create_client(server_steam_id, 0)
 			peer.server_relay = true
-			multiplayer.set_multiplayer_peer(peer)
-
-		get_tree().change_scene_to_packed(main_scene)
+			multiplayer.multiplayer_peer = peer
+		else:
+			printerr("peer did not properly initialize")
 
 	else:
 		match response:
@@ -82,3 +83,8 @@ func _on_join_button_pressed() -> void:
 func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_packed(main_menu_scene)
 	Steam.steamShutdown()
+
+
+func _on_connected_to_server() -> void:
+	Cursor.change_cursor(true)
+	get_tree().change_scene_to_packed(main_scene)

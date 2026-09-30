@@ -28,11 +28,8 @@ var is_lobby_closed: bool:
 
 func _ready() -> void:
 	if is_multiplayer_authority():
-		if Steamworks.steam_is_chosen:
-			pass
-		else:
-			multiplayer.peer_connected.connect(_on_peer_connected)
-			multiplayer.peer_disconnected.connect(on_peer_disconnected)
+		multiplayer.peer_connected.connect(_on_peer_connected)
+		multiplayer.peer_disconnected.connect(on_peer_disconnected)
 
 	# Singleplayer instance does not need readied logic.
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:

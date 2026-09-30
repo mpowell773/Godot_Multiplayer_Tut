@@ -50,8 +50,9 @@ func _on_lobby_created(connect_status: Steam.Result, lobby_id: int) -> void:
 		var peer: MultiplayerPeer = SteamMultiplayerPeer.new()
 		peer.create_host(0)
 		peer.server_relay = true
-		multiplayer.set_multiplayer_peer(peer)
+		multiplayer.multiplayer_peer = peer
 
+		Cursor.change_cursor(true)
 		get_tree().change_scene_to_packed(main_scene)
 
 	else:
