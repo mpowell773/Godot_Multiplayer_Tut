@@ -108,7 +108,6 @@ text = "Back"
 
 [node name="LobbyFilters" type="Control" parent="." unique_id=490387305]
 unique_name_in_owner = true
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -165,6 +164,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+disabled = true
 selected = 1
 item_count = 4
 popup/item_0/text = "Close"
@@ -190,6 +190,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+editable = false
 
 [node name="MaxLobbiesReturned" type="HBoxContainer" parent="LobbyFilters/Panel/MarginContainer/VBoxContainer/VBoxFilters" unique_id=1388097715]
 layout_mode = 2

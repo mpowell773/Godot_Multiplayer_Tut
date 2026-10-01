@@ -30,10 +30,15 @@ func _ready() -> void:
 
 
 func add_request_lobby_filters() -> void:
-	Steam.addRequestLobbyListDistanceFilter(\
-		distance_option.selected as Steam.LobbyDistanceFilter
-	)
-	Steam.addRequestLobbyListFilterSlotsAvailable(int(open_slots_spin_box.value))
+	# Curious if these specific filters are screwing with finding lobbies.
+	# The most important filter is the key:value pairs anyway.
+
+	#Steam.addRequestLobbyListDistanceFilter(\
+	#	distance_option.selected as Steam.LobbyDistanceFilter
+	#)
+
+	#Steam.addRequestLobbyListFilterSlotsAvailable(int(open_slots_spin_box.value))
+
 	Steam.addRequestLobbyListResultCountFilter(int(max_lobbies_spin_box.value))
 
 	var these_terms: PackedStringArray = search_terms_edit.text.split(",", false)
