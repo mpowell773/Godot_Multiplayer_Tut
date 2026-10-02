@@ -8,6 +8,7 @@ var current_paused_peer: int = -1
 var options_menu_scene: PackedScene = preload("uid://bo5x5clqnyoui")
 
 @onready var resume_button: Button = %ResumeButton
+@onready var invite_button: Button = %InviteButton
 @onready var quit_button: Button = %QuitButton
 @onready var options_button: Button = %OptionsButton
 
@@ -16,10 +17,12 @@ func _ready() -> void:
 	resume_button.pressed.connect(_on_resume_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 	options_button.pressed.connect(_on_options_pressed)
+	invite_button.pressed.connect(_on_invite_pressed)
 
 	UIAudioManager.register_buttons(
 		[
 			resume_button,
+			invite_button,
 			options_button,
 			quit_button
 		]
@@ -76,6 +79,10 @@ func unpause() -> void:
 
 func _on_resume_pressed() -> void:
 	request_unpause.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
+
+
+func _on_invite_pressed() -> void:
+	Steamworks.invite_player()
 
 
 func _on_quit_pressed() -> void:

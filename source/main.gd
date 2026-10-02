@@ -131,6 +131,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 		if is_instance_valid(player):
 			player.kill()
 		player_dictionary.erase(peer_id)
+		Steamworks.player_exit_lobby(peer_id)
 
 
 func _on_quit() -> void:

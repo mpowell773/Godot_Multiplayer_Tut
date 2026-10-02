@@ -29,6 +29,17 @@ func initialize_steam() -> void:
 	steam_username = Steam.getPersonaName()
 
 
+func player_exit_lobby(peer_id: int) -> void:
+	if lobby_id != 0 and peer_id == multiplayer.get_unique_id():
+		Steam.leaveLobby(lobby_id)
+		lobby_id = 0
+		print("Player %s has exited the lobby" % peer_id)
+
+
+func invite_player() -> void:
+	Steam.activateGameOverlayInviteDialog(lobby_id)
+
+
 func _on_lobby_join_requested(_lobby_id: int, friend_id: int) -> void:
 	var friend_joining: String = Steam.getFriendPersonaName(friend_id)
 	print("Joining lobby with %s" % friend_joining)
