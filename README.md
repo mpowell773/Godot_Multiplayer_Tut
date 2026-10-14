@@ -1,0 +1,1 @@
+This will be a readme in the future except I do not remember any of the markdown commands LOL.

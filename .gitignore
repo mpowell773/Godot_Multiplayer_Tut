@@ -1,4 +1,12 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-/build
+/source/build/
+
+# GodotSteam specific ignores
+/steam_appid.txt
+/steam_api.json
+
+*.dll
+*.so
+*.dylib
